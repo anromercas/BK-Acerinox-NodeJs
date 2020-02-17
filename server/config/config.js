@@ -16,7 +16,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 let urlDB;
 
 if (process.env.NODE_ENV === 'dev') {
-    urlDB = 'mongodb://localhost:27017/basuras';
+    urlDB = 'mongodb://localhost:27017/basuras-acerinox';
 } else {
     urlDB = process.env.MONGO_URI;
 }
@@ -26,7 +26,7 @@ process.env.URLDB = urlDB;
 // ==================
 // vencimiento del token 99999999999999h
 // ==================
-process.env.CADUCIDAD_TOKEN = "10h"; // 1 año
+process.env.CADUCIDAD_TOKEN = "10h"; // 10 horas
 
 // ==================
 // SEED de autenticación

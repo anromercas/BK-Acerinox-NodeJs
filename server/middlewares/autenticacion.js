@@ -34,7 +34,7 @@ let verificaAdmin_Role = (req, res, next) => {
 
     let usuario = req.usuario;
 
-    if (usuario.role === 'ADMIN_ROLE') {
+    if (usuario.role === 'ADMIN_ROLE' || usuario.role === 'SUPER_ADMIN_ROLE') {
         next();
     } else {
         return res.json({
@@ -47,8 +47,30 @@ let verificaAdmin_Role = (req, res, next) => {
 };
 
 
+// ==================
+// Verifica SUPER_ADMIN_ROLE
+// ==================
+
+let verificaSuper_Admin_Role = (req, res, next) => {
+
+    let usuario = req.usuario;
+
+    if (usuario.role === 'SUPER_ADMIN_ROLE') {
+        next();
+    } else {
+        return res.json({
+            ok: false,
+            err: {
+                message: 'El usuario no es SUPER administrador'
+            }
+        });
+    }
+};
+
+
 
 module.exports = {
     verificaToken,
-    verificaAdmin_Role
+    verificaAdmin_Role,
+    verificaSuper_Admin_Role
 }

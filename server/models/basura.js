@@ -56,6 +56,10 @@ let basuraSchema = new Schema({
     imgDetalle: {
         type: String,
         required: false
+    },
+    mapa: {
+        type: String,
+        required: false
     }
 
 });

@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const _ = require('underscore');
 
 const Usuario = require('../models/usuario');
@@ -19,7 +20,7 @@ app.get('/usuario', verificaToken, (req, res) => {
     let limite = req.query.limite || 5;
     limite = Number(limite);
 
-    Usuario.find({}, 'nombre email role estado img twofactor')
+    Usuario.find({}, 'nombre email role estado twofactor avatar')
         .skip(desde)
         .limit(limite)
         .exec((err, usuarios) => {
@@ -59,13 +60,14 @@ app.get('/usuario-token', verificaToken, (req,res) => {
 // =================================
 // Crear usuario
 // =================================
-app.post('/usuario' /*, [verificaToken  , verificaAdmin_Role  ]*/ , (req, res) => {
+app.post('/usuario' , (req, res) => {
     let body = req.body;
     let usuario = new Usuario({
         nombre: body.nombre,
         email: body.email,
         password: bcrypt.hashSync(body.password, 10),
         role: body.role,
+        avatar: body.avatar,
         twofactor: null
     });
 
@@ -93,12 +95,12 @@ app.post('/usuario' /*, [verificaToken  , verificaAdmin_Role  ]*/ , (req, res) =
 // =================================
 app.put('/usuario/:id', verificaToken, (req, res) => {
     let id = req.params.id;
-    let body = _.pick(req.body, ['nombre', 'email', 'img']);
+    let body = _.pick(req.body, ['nombre', 'email', 'avatar']);
 
 
 
     let options = {
-        new: false,
+        new: true,
         runValidators: true,
         context: 'query'
     };
@@ -112,9 +114,14 @@ app.put('/usuario/:id', verificaToken, (req, res) => {
             });
         }
 
+        let token = jwt.sign({
+            usuario: usuarioDB
+        }, process.env.SEED, { expiresIn: process.env.CADUCIDAD_TOKEN });
+
         res.json({
             ok: true,
-            usuario: usuarioDB
+            usuario: usuarioDB,
+            token
         });
 
     });

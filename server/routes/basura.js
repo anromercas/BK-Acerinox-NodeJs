@@ -1,6 +1,6 @@
 const express = require('express');
 
-let { verificaToken, verificaAdmin_Role } = require('../middlewares/autenticacion');
+let { verificaToken, verificaAdmin_Role, verificaSuper_Admin_Role } = require('../middlewares/autenticacion');
 
 let app = express();
 
@@ -153,7 +153,8 @@ app.post('/basura', verificaToken, (req, res) => {
         fecha: body.fecha,
         img: body.img,
         imgContenedor: body.imgContenedor,
-        imgDetalle: body.imgDetalle
+        imgDetalle: body.imgDetalle,
+        mapa: body.mapa
     });
 
     basura.save((err, basuraDB) => {
@@ -215,6 +216,27 @@ app.put('/basura/:id', verificaToken, (req, res) => {
 
         if (!basuraDB) {
             return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.json({
+            ok: true,
+            basura: basuraDB
+        });
+    });
+
+});
+
+// =================================
+// Purgar Basuras
+// =================================
+app.put('/purgar-basuras', [verificaToken, verificaSuper_Admin_Role], (req, res) => {
+
+    Basura.updateMany({}, {"$set": {"calificacion": '', "estado": '', "residuo": '', "observaciones": '', "fecha": '', "img": '', "imgDetalle": '', "usuario": null}}, (err, basuraDB) => {
+        if (err) {
+            return res.status(500).json({
                 ok: false,
                 err
             });

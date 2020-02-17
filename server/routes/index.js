@@ -9,11 +9,12 @@ app.use(require('./historico'));
 app.use(require('./upload'));
 app.use(require('./imagenes'));
 app.use(require('./mail'));
+app.use(require('./tarea'));
 
 app.get('/', (req, res) => {
     res.json({
         ok: true,
-        message: 'Api rest Residuos Urbanos Atlactic'
+        message: 'Api rest Residuos Urbanos Acerinox'
     });
 });
 
