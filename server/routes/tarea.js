@@ -44,8 +44,8 @@ app.get("/tarea", verificaToken, (req, res) => {
 // =================================
 // Mostrar todas las tareas de un usuario
 // =================================
-app.get("/tarea/:id", verificaToken, (req, res) => {
-  let id = req.params.id;
+app.get("/tareas", verificaToken, (req, res) => {
+  let id = req.usuario._id;
 
   let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -89,8 +89,7 @@ app.get("/tarea/:id", verificaToken, (req, res) => {
     }
     res.json({
       ok: true,
-      tareas,
-      total: conteo
+      tareas
     });
   });
 });
