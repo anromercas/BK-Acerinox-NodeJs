@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
+import React, { useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { GlobalContext } from '../context/GlobalState';
 import Paper from '@material-ui/core/Paper';
@@ -44,20 +44,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const TaskAssigner = () => {
-  const { opss, checklists, getOPSs, getChecklists, addChecklist, addOPS, auditors, getAuditors } = useContext(GlobalContext); 
-  const [type, setType] = useState('puntual');
-  const [taskList, setTaskList] = useState([]);
+  const { checklists, getChecklists, addChecklist, auditors, getAuditors } = useContext(GlobalContext); 
+  const [subType, setSubType] = useState('PUNTUAL');
   const [selectedDate, setSelectedDate] = useState(new Date('2020-03-26T21:11:54'));
   const [auditor, setAuditor] = useState(null)
-  const [task, setTask] = useState(null)
+  const [checklistSelected, setChecklistSelected] = useState(null)
   const [menu, setMenu] = useState(0);
-  const classes = useStyles();
   const handleTypeChange = event => {
-    setType(event.target.value);
+    setSubType(event.target.value);
   };
-  //const auditorList = ["Pepe", "Josele", "Manolo"];
-  //const checklists = [{name: "Checklist GS1"}, {name: "Checklist GS2"}, {name: "Checklist SOP3"}, {name: "Checklist Torno 2"}, {name: "Checklist whatever"}];
-  //const opsList = ["OPS#1", "OPS#2", "OPS#3", "OPS#4", "OPS#5", "OPS#6"];
+
   const tabNames = ["Checklist", "OPS"];
   const menuIcons = ["PlaylistAddCheckRounded", "WarningRounded"];
   const handleDateChange = date => {
@@ -65,49 +61,25 @@ export const TaskAssigner = () => {
   };
   const createNewTask = useCallback((e) => {
     e.preventDefault();
-    //CREATE A NEW ops/checklist instance for auditor
+    //CREATE A NEW checklist instance for auditor
     if (auditor !== undefined && auditor !== null &&
-      task !== undefined && task !== null){
-        switch (menu) {
-          case 0:
-            const checklistInstance = {
-              
-            };
-            addChecklist(checklistInstance);
-            break;
-          case 1:
-            const opsInstance = {
-              assignee: auditor._id,
-              ops_id: task._id,
-              type: type,
-              content: task.checkpointNames.map(cp => { return {"checkpointName": cp, "images": [], "text": ""}})
-            };
-            addOPS(opsInstance);
-            break;
-          default:
-            break;
-        }
+      checklistSelected !== undefined && checklistSelected !== null){
+      const checklistInstance = {
+          
+      };
+      addChecklist(checklistInstance);
     }
   }, []);
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    console.log(auditor);
-    console.log(task);
     getAuditors();
     getChecklists();
-    getOPSs();
-    switch (menu) {
-      case 0:
-        setTaskList(checklists);
-        break;
-      case 1:
-        setTaskList(opss);
-        break;
-      default:
-        console.log("default");
-        break;
-    }
   }, [menu]);
+  const filterChecklists = () => {
+    const result =  menu ? checklists.filter(checklist => checklist.type !== "CHECKLIST").map(checklist => checklist.name) : checklists.filter(checklist => checklist.type !== "OPS").map(checklist => checklist.name); 
+    console.log("RESULT lenght " + JSON.stringify(result[0]));
+    return result;
+  }
   return (
     <Grid container spacing={3}>
       <Grid item xs={4} md={4} lg={4}>
@@ -115,7 +87,7 @@ export const TaskAssigner = () => {
           <Typography variant="h6" align="center"> Tarea </Typography>
           <Divider />
           <TA_Menu tabNames={tabNames} icons={menuIcons} handleSelection={setMenu} />
-          <TA_List values={taskList.map(task => task.name)} handleFunction={setTask} />
+          <TA_List values={filterChecklists()} handleFunction={setChecklistSelected} />
         </Paper>
       </Grid>
       <Grid item xs={4} md={4} lg={4}>
@@ -141,13 +113,13 @@ export const TaskAssigner = () => {
           <Grid item xs={6} md={6} lg={6}>
             <FormControl component="fieldset">
               <FormLabel component="legend">Perioricidad</FormLabel>
-              <RadioGroup aria-label="perioricidad" name="periodo" value={type} onChange={handleTypeChange}>
-                <FormControlLabel value="puntual" control={<Radio color="secondary"/>} label="Puntual" />
-                <FormControlLabel value="puntual_semanal" control={<Radio color="secondary"/>} label="Puntual Semanal" />
-                <FormControlLabel value="puntual_mensual" control={<Radio color="secondary"/>} label="Puntual Mensual" />
-                <FormControlLabel value="puntual_aleatoria" control={<Radio color="secondary"/>} label="Puntual Aleatoria" />
-                <FormControlLabel value="semanal" control={<Radio color="secondary"/>} label="Semanal" />
-                <FormControlLabel value="mensual" control={<Radio color="secondary"/>} label="Mensual" />
+              <RadioGroup aria-label="perioricidad" name="periodo" value={subType} onChange={handleTypeChange}>
+                <FormControlLabel value="PUNTUAL" control={<Radio color="secondary"/>} label="Puntual" />
+                <FormControlLabel value="PUNTUAL_SEMANAL" control={<Radio color="secondary"/>} label="Puntual Semanal" />
+                <FormControlLabel value="PUNTUAL_MENSUAL" control={<Radio color="secondary"/>} label="Puntual Mensual" />
+                <FormControlLabel value="PUNTUAL_ALEATORIA" control={<Radio color="secondary"/>} label="Puntual Aleatoria" />
+                <FormControlLabel value="SEMANAL" control={<Radio color="secondary"/>} label="Semanal" />
+                <FormControlLabel value="MENSUAL" control={<Radio color="secondary"/>} label="Mensual" />
               </RadioGroup>
             </FormControl>
           </Grid>

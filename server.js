@@ -9,11 +9,8 @@ dotenv.config({ path: './config/config.env' });
 
 connectDB();
 
-const tasks = require('./routes/tasks');
-const opss = require('./routes/opss');
 const checklists = require('./routes/checklists');
 const checklistInstances = require('./routes/checklistInstances');
-const opsInstances = require('./routes/opsInstances');
 const queries = require('./routes/queries');
 
 const app = express();
@@ -24,10 +21,7 @@ if(process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use('/api/v1/tasks', tasks);
-app.use('/api/v1/opss', opss);
 app.use('/api/v1/checklists', checklists);
-app.use('/api/v1/opsInstances', opsInstances);
 app.use('/api/v1/checklistInstances', checklistInstances);
 app.use('/api/v1/queries', queries);
 

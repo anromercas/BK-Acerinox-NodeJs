@@ -32,7 +32,7 @@ export const TA_List = ({values, handleFunction}) => {
   };
   return (
   <List className={classes.root} component="nav" aria-label="secondary mailbox folder">
-    {values === undefined ? "" : values.map((value, index) => 
+    {(values === undefined || values === null) ? "" : values.map((value, index) => 
       (<ListItem
         button
         selected={selectedIndex === index}

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
-const checklistSchema = new mongoose.Schema({
+const ChecklistSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    enum: ['CHECKLIST', 'OPS'],
+    default: 'CHECKLIST'
+  },
   name: {
     type: String,
     trim: true,
@@ -14,10 +19,14 @@ const checklistSchema = new mongoose.Schema({
   department: {
     type: String
   },
-  checkpointNames: {
-    type: [String],
-    default: []
-  }
+  checkpoints: [{
+    type: {
+      type: String,
+      enum: ['INPUT_LINES', 'FIXED_VALUES'],
+      default: 'INPUT_LINES'
+    },
+    name: String
+  }]
 }, {timestamps: true});
 
-module.exports = mongoose.model('checklist', checklistSchema);
+module.exports = mongoose.model('Checklist', ChecklistSchema);

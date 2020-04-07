@@ -1,4 +1,4 @@
-const ChecklistInstance = require('../models/checklistInstance');
+const ChecklistInstance = require('../models/ChecklistInstance');
 
 // @desc    Get all checklist instances
 // @route   GET /api/v1/checklistInstances
@@ -25,8 +25,17 @@ exports.getChecklistInstances = async (req, res, next) => {
 // @access  Public
 exports.addChecklistInstance = async (req, res, next) => {
   try {
-    const { name, type, auditor_id, checklist_id} = req.body;
-    const checklistinstance = ChecklistInstance.create({ name, type, assignee: auditor_id, ops_id });
+    const { name, subType, auditor_id, checklist_id, startDate, dueDate, overdueDate, content} = req.body;
+    const aNewChklInst = {
+      user_id: auditor_id,
+      checklist_id,
+      subType,
+      startDate,
+      dueDate,
+      overdueDate,
+      content
+    };
+    const checklistinstance = ChecklistInstance.create(aNewChklInst);
     
     return res.status(201).json({
       success: true,

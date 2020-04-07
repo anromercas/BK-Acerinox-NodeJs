@@ -1,4 +1,4 @@
-const Checklist = require('../models/checklist');
+const Checklist = require('../models/Checklist');
 
 // @desc    Get all checklist instances
 // @route   GET /api/v1/checklists
@@ -25,13 +25,15 @@ exports.getChecklists = async (req, res, next) => {
 // @access  Public
 exports.addChecklist = async (req, res, next) => {
   try {
-    const { name, type, checkPointNames } = req.body;
-
-    const task = await Checklist.create(req.body);
+    const { name, type, description, department, checkpoints } = req.body;
+    const aNewChlst = {
+      name, type, description, department, checkpoints
+    }
+    const checklist = await Checklist.create(aNewChlst);
   
     return res.status(201).json({
       success: true,
-      data: task
+      data: checklist
     }); 
   } catch (err) {
     if(err.name === 'ValidationError') {
@@ -50,22 +52,24 @@ exports.addChecklist = async (req, res, next) => {
   }
 }
 
-// @desc    Delete checklist
+// @desc    Delete checklist (it does not delete in cascade)
 // @route   DELETE /api/v1/checklists/:id
 // @access  Public
 exports.deleteChecklist = async (req, res, next) => {
   try {
     const checklist = await Checklist.findById(req.params.id);
 
-    if(!checklist) {
-      return res.status(404).json({
-        success: false,
-        error: 'No task found'
-      });
-    }
-
-    await checklist.remove();
-
+    // if(!checklist) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     error: 'No task found'
+    //   });
+    // }
+    if (checklist)
+      await checklist.remove();
+    else 
+      console.log('it was not present!');
+      
     return res.status(200).json({
       success: true,
       data: {}

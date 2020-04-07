@@ -4,10 +4,9 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded';
 
 export const TA_Task = ({ task }) => {
-  const { deleteOPSInstance, deleteChecklistInstance } = useContext(GlobalContext);
+  const { deleteChecklistInstance } = useContext(GlobalContext);
   const deleteTask = () => {
-    deleteChecklistInstance(task._id);//TODO refine this situation whereby we only have to call one of them
-    deleteOPSInstance(task._id);
+    deleteChecklistInstance(task._id);
   };
   const message = () => {
     return `${task.name} ▶︎ ${task.auditor} ⎯ ${task.type} ⎯ ${task.dueDate}`;

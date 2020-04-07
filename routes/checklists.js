@@ -5,9 +5,9 @@ const { getChecklists, addChecklist, deleteChecklist } = require('../controllers
 router
   .route('/')
   .get(getChecklists)
-  .post(addChecklist)
+  .post(addChecklist);
 
-  router
+router
   .route('/:id')
   .delete(deleteChecklist);
 

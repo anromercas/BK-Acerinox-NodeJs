@@ -3,20 +3,20 @@ const mongoose = require('mongoose');
 const checklistInstanceSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'User',
     required: [true, 'A user for this checklist´s instance is required']
   },
   checklist_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'checklist',
+    ref: 'Checklist',
     required: [true, 'A checklist for this checklist´s instance is required']
   },
   status: {
     type: String,
-    enum: ['ASSIGNED', 'DONE', 'REVIEW-PENDING', 'REVIEWED'],
+    enum: ['ASSIGNED', 'REVIEW-PENDING', 'REVIEWED'],
     default: 'ASSIGNED'
   },
-  type: {
+  subType: {
     type: String,
     enum: ['PUNTUAL', 'PUNTUAL-ALEATORIA', 'PUNTUAL-SEMANAL', 'PUNTUAL-MENSUAL', 'SEMANAL', 'MENSUAL'],
     default: 'PUNTUAL'
@@ -32,11 +32,20 @@ const checklistInstanceSchema = new mongoose.Schema({
   signingDate: Date,
   signingInfo: String,
   content: [{
-    checkpointName: String,
+    name: String,
+    type: {
+      type: String,
+      enum: ['INPUT_LINES', 'FIXED_VALUES'],
+      default: 'INPUT_LINES'
+    },
     lines: [{
-              images: [String],
-              text: String
-            }]
+      images: [String],
+      text: String
+    }],
+    values: [{
+      type: String, //this refers to the type of the value (i.e: {type: boolean, value: "3"})
+      value: String
+    }]
   }]
 }, {timestamps: true});
 
