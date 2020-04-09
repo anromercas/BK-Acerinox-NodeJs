@@ -8,7 +8,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import { TaskList } from './TaskList';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -28,7 +27,7 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { TA_List } from './TA_List';
 import { TA_Menu } from './TA_Menu';
 import { TA_Latests } from './TA_Latests';
-
+//require('../utils/typeExtension');
 // import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 // import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
 
@@ -42,13 +41,18 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
 }));
-
+Date.prototype.addDays = function(days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+}
 export const TaskAssigner = () => {
-  const { checklists, getChecklists, addChecklist, auditors, getAuditors } = useContext(GlobalContext); 
+  const { checklists, getChecklists, addChecklist, addChecklistInstance, auditors, getAuditors } = useContext(GlobalContext); 
   const [subType, setSubType] = useState('PUNTUAL');
   const [selectedDate, setSelectedDate] = useState(new Date('2020-03-26T21:11:54'));
-  const [auditor, setAuditor] = useState(null)
-  const [checklistSelected, setChecklistSelected] = useState(null)
+  const [repetition, setRepetition] = useState(1);
+  const [auditor, setAuditor] = useState(null);
+  const [checklistSelected, setChecklistSelected] = useState(null);
   const [menu, setMenu] = useState(0);
   const handleTypeChange = event => {
     setSubType(event.target.value);
@@ -59,25 +63,38 @@ export const TaskAssigner = () => {
   const handleDateChange = date => {
     setSelectedDate(date);
   };
-  const createNewTask = useCallback((e) => {
-    e.preventDefault();
+ 
+  const createNewTask = (e) => {
     //CREATE A NEW checklist instance for auditor
+    console.log('**createNewTask**');
+    console.log('auditor ' + JSON.stringify(auditor));
+    console.log("checklistSelected: " + JSON.stringify(checklistSelected));
+    console.log('repetition ' + repetition);
+    console.log('fecha selected ' + selectedDate);
+    console.log('subtype ' + subType);
     if (auditor !== undefined && auditor !== null &&
       checklistSelected !== undefined && checklistSelected !== null){
       const checklistInstance = {
-          
+          auditor,
+          checklist: checklistSelected,
+          subType,
+          startDate: selectedDate,
+          dueDate: selectedDate,
+          overdueDate: selectedDate.addDays(checklistSelected.maxOverdueDays),
+          repetition: repetition
       };
-      addChecklist(checklistInstance);
-    }
-  }, []);
+      console.log('before addChecklistInstance');
+      addChecklistInstance(checklistInstance);
+    } else ; //TODO rise and alert showing what you need
+  };
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     getAuditors();
     getChecklists();
   }, [menu]);
   const filterChecklists = () => {
-    const result =  menu ? checklists.filter(checklist => checklist.type !== "CHECKLIST").map(checklist => checklist.name) : checklists.filter(checklist => checklist.type !== "OPS").map(checklist => checklist.name); 
-    console.log("RESULT lenght " + JSON.stringify(result[0]));
+    const result =  menu ? checklists.filter(checklist => checklist.type !== "CHECKLIST") : checklists.filter(checklist => checklist.type !== "OPS"); 
+    //console.log("RESULT length " + JSON.stringify(result[0]));
     return result;
   }
   return (
@@ -87,14 +104,14 @@ export const TaskAssigner = () => {
           <Typography variant="h6" align="center"> Tarea </Typography>
           <Divider />
           <TA_Menu tabNames={tabNames} icons={menuIcons} handleSelection={setMenu} />
-          <TA_List values={filterChecklists()} handleFunction={setChecklistSelected} />
+          <TA_List values={filterChecklists()} primaryDisplayKey={"name"} sectionKey={"department"} handleFunction={setChecklistSelected} />
         </Paper>
       </Grid>
       <Grid item xs={4} md={4} lg={4}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item xs> </Grid>          
           <Grid item xs>
-            <IconButton onClick={createNewTask}>
+            <IconButton onClick={() => createNewTask()}>
               <ArrowForwardIosIcon fontSize="large"/>
             </IconButton>
           </Grid>
@@ -105,7 +122,7 @@ export const TaskAssigner = () => {
         <Paper>
           <Typography variant="h6" align="center"> Auditor </Typography>
           <Divider />
-          <TA_List values={auditors.map(auditor => auditor.firstname + " " + auditor.lastname)} handleFunction={setAuditor}/>
+          <TA_List values={auditors} primaryDisplayKey={"fullname"} handleFunction={setAuditor}/>
         </Paper>
       </Grid>
       <Grid item xs={6} md={6} lg={6}>
@@ -133,20 +150,14 @@ export const TaskAssigner = () => {
               </Grid>
               <Grid item xs>
                 <FormLabel component="legend">Repetición</FormLabel>
-                {/*<IconButton>
-                  <AddRoundedIcon />
-                </IconButton>
-                <IconButton>
-                  <RemoveRoundedIcon />
-                </IconButton>*/}
-                <TextField id="outlined-basic" variant="outlined" type="number" defaultValue={1} inputProps={{min:0}} />
+                <TextField id="outlined-basic" variant="outlined" type="number" defaultValue={repetition} inputProps={{min:0}} onChange={(e) => { setRepetition(parseInt(e.target.value)) }}/>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
     <Grid item xs={6} md={6} lg={6}>
-    <FormLabel component="legend">Últimas asignadas</FormLabel>
+      <FormLabel component="legend">Últimas asignadas</FormLabel>
       <TA_Latests />
     </Grid>
   </Grid>

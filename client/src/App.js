@@ -1,6 +1,5 @@
 import React from 'react';
 import { Header } from './components/Header';
-import { TaskList } from './components/TaskList';
 import { AddTask } from './components/AddTask';
 import { TaskAssigner } from "./components/TaskAssigner"
 
@@ -37,14 +36,9 @@ function App() {
       <GlobalProvider>
         <Container maxWidth="lg">
           <Header />
-          {/*<div className="container">*/}
-            {/* <Balance />*/}
-            {/* <IncomeExpenses />*/}
             <ThemeProvider theme={theme}>
                <TaskAssigner />
             </ThemeProvider>
-         {/* </div>*/}
-         
         </Container>
       </GlobalProvider>
   );

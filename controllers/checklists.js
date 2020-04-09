@@ -5,7 +5,7 @@ const Checklist = require('../models/Checklist');
 // @access  Public
 exports.getChecklists = async (req, res, next) => {
   try {
-    const checklists = await Checklist.find();
+    const checklists = await Checklist.find({}, 'name description type department maxOverdueDays');
 
     return res.status(200).json({
       success: true,

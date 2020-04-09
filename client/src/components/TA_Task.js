@@ -8,12 +8,14 @@ export const TA_Task = ({ task }) => {
   const deleteTask = () => {
     deleteChecklistInstance(task._id);
   };
-  const message = () => {
-    return `${task.name} ▶︎ ${task.auditor} ⎯ ${task.type} ⎯ ${task.dueDate}`;
+  const summup = () => {
+    const dueDate = new Date(task.dueDate);
+    const dueDateFormattedDate = dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString(); 
+    return `${task.checklist_id.name} ▶︎ ${task.user_id.fullname} ⎯ ${task.subType} ⎯ ${dueDateFormattedDate}`;
   }
  
   return (
-    <SnackbarContent key={task._id} message={message()} action={
+    <SnackbarContent key={task._id} message={summup()} action={
       <HighlightOffRoundedIcon color="primary" size="medium" onClick={deleteTask}>
         Eliminar
       </HighlightOffRoundedIcon>} />

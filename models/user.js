@@ -25,14 +25,18 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['AUDITOR', 'ADMINISTRATOR'],
+    enum: ['AUDITOR', 'ADMINISTRATOR', 'WORKER', "EXTERN"],
     default: 'AUDITOR'
   },
   active: {
     type: Boolean,
     default: true
+  },
+  avatar: {
+    type: String
   }
 }, {timestamps: true});
+userSchema.virtual('fullname').get(() => this.firstname +  " " + this.lastname );
 // excerpt from http://devsmash.com/blog/password-authentication-with-mongoose-and-bcrypt
 userSchema.pre('save', function(next) {
   var user = this;

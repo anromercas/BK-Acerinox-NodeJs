@@ -19,13 +19,15 @@ const ChecklistSchema = new mongoose.Schema({
   department: {
     type: String
   },
+  maxOverdueDays: Number,
   checkpoints: [{
+    name: String,
     type: {
       type: String,
-      enum: ['INPUT_LINES', 'FIXED_VALUES'],
-      default: 'INPUT_LINES'
+      enum: ['FREE_LINE', 'FIXED_LINE'],
+      default: 'FREE_LINE'
     },
-    name: String
+    fixedTypes: [String] //this refers to the type of the values (i.e: [boolean, Date, String...])  
   }]
 }, {timestamps: true});
 

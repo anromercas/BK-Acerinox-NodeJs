@@ -35,14 +35,14 @@ const checklistInstanceSchema = new mongoose.Schema({
     name: String,
     type: {
       type: String,
-      enum: ['INPUT_LINES', 'FIXED_VALUES'],
-      default: 'INPUT_LINES'
+      enum: ['FREE_LINE', 'FIXED_LINE'],
+      default: 'FREE_LINE'
     },
-    lines: [{
+    freeValues: [{
       images: [String],
       text: String
     }],
-    values: [{
+    fixedValues: [{
       type: String, //this refers to the type of the value (i.e: {type: boolean, value: "3"})
       value: String
     }]

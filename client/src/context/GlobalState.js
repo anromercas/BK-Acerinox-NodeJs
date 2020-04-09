@@ -105,6 +105,28 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
+  async function addChecklistInstance(checklistInstance) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    try {
+      const res = await axios.post('/api/v1/checklistInstances', checklistInstance, config);
+
+      dispatch({
+        type: 'ADD_CHECKLIST_INSTANCE',
+        payload: res.data.data
+      });
+    } catch (err) {
+      dispatch({
+        type: 'TA_ERROR',
+        payload: err.response.data.error
+      });
+    }
+  }
+
   return (<GlobalContext.Provider value={{
     checklists: state.checklists,
     auditors: state.auditors,
@@ -115,6 +137,7 @@ export const GlobalProvider = ({ children }) => {
     getChecklists,
     getLatests,
     addChecklist,
+    addChecklistInstance,
     deleteChecklistInstance,
   }}>
     {children}

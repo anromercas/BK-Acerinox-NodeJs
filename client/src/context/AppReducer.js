@@ -29,6 +29,11 @@ export default (state, action) => {
         ...state,
         checklists: [action.payload, ...state.checklists]
       }
+    case 'ADD_CHECKLIST_INSTANCE':
+      return {
+        ...state,
+        latests: [action.payload, ...state.latests].splice(0, 10)
+      }
     case 'TA_ERROR':
       return {
         ...state,
