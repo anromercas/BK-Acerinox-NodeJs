@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Badge from '@material-ui/core/Badge';
 import Avatar from '@material-ui/core/Avatar';
-import { red } from '@material-ui/core/colors';
+import Chip from '@material-ui/core/Chip';
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -88,16 +88,16 @@ export const TA_List = ({values, handleFunction, primaryDisplayKey, sectionKey})
             onClick={(event) => handleListItemClick(event, undefined, index)}>
                  {value.avatar ? <Avatar alt="A.M." src={value.avatar} className={classes.large} /> : "" }
                  <ListItemText primary={value[primaryDisplayKey]} secondary={value['role']}/>
-              {/* <StyledBadge
-                overlap="circle"
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                variant="dot"
-              >
-                <Avatar alt="Remy Sharp" src={"https://i.pravatar.cc/150"} />
-              </StyledBadge> */}
+              { value.role === 'WORKER'? 
+                <StyledBadge 
+                  overlap="circle"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  variant="dot">
+                </StyledBadge> :
+                "" }
          
           </ListItem>))
         }
@@ -108,7 +108,9 @@ export const TA_List = ({values, handleFunction, primaryDisplayKey, sectionKey})
       {Object.keys(valuesBySection).map((sectionId) => (
         <li key={`section-${sectionId}`} className={classes.listSection}>
           <ul className={classes.ul}>
-            <ListSubheader color="terciary">{`${sectionId}`}</ListSubheader>
+            <ListSubheader color="terciary">
+              <Chip label={`${sectionId}`}/>
+            </ListSubheader>
             {valuesBySection[sectionId].map((item, index) => (
               <ListItem key={`${sectionId}-${item._id}`}
               button

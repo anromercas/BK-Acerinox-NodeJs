@@ -122,7 +122,7 @@ export const TaskAssigner = () => {
         <Paper>
           <Typography variant="h6" align="center"> Auditor </Typography>
           <Divider />
-          <TA_List values={auditors} primaryDisplayKey={"fullname"} handleFunction={setAuditor}/>
+          <TA_List values={auditors} primaryDisplayKey={"fullname"}  handleFunction={setAuditor}/>
         </Paper>
       </Grid>
       <Grid item xs={6} md={6} lg={6}>

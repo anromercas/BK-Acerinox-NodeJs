@@ -5,7 +5,7 @@ export const Header = () => {
   return (
     <>
     <Typography variant="h3" align="center">
-       Gestión de Residuos 
+       Gestor de Tareas 
     </Typography>
     <Typography variant="h5" align="center" color="textSecondary" gutterBottom>
       Acerinox
