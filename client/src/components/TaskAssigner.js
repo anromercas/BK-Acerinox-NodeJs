@@ -15,6 +15,7 @@ import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -108,7 +109,7 @@ export const TaskAssigner = () => {
         </Paper>
       </Grid>
       <Grid item xs={4} md={4} lg={4}>
-        <Grid container direction="column" justify="center" alignItems="center">
+        {/* <Grid container direction="column" justify="center" alignItems="center">
           <Grid item xs> </Grid>          
           <Grid item xs>
             <IconButton onClick={() => createNewTask()}>
@@ -116,14 +117,23 @@ export const TaskAssigner = () => {
             </IconButton>
           </Grid>
           <Grid item xs></Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
       <Grid item xs={4} md={4} lg={4}>
-        <Paper>
-          <Typography variant="h6" align="center"> Auditor </Typography>
-          <Divider />
-          <TA_List values={auditors} primaryDisplayKey={"fullname"}  handleFunction={setAuditor}/>
-        </Paper>
+        <Grid container direction="column" spacing={2}>
+          <Grid item xs={10}>
+            <Paper>
+              <Typography variant="h6" align="center"> Auditor </Typography>
+              <Divider />
+              <TA_List values={auditors} primaryDisplayKey={"fullname"} sectionKey={"department"} handleFunction={setAuditor}/>
+            </Paper>
+          </Grid>
+          <Grid item xs={2}>
+            <Button variant="contained" size="large" startIcon={<ArrowForwardIosIcon />} onClick={() => createNewTask()}>
+              Asignar
+            </Button>
+          </Grid>
+        </Grid> 
       </Grid>
       <Grid item xs={6} md={6} lg={6}>
         <Grid container spacing={1}>
@@ -132,11 +142,10 @@ export const TaskAssigner = () => {
               <FormLabel component="legend">Perioricidad</FormLabel>
               <RadioGroup aria-label="perioricidad" name="periodo" value={subType} onChange={handleTypeChange}>
                 <FormControlLabel value="PUNTUAL" control={<Radio color="secondary"/>} label="Puntual" />
-                <FormControlLabel value="PUNTUAL_SEMANAL" control={<Radio color="secondary"/>} label="Puntual Semanal" />
-                <FormControlLabel value="PUNTUAL_MENSUAL" control={<Radio color="secondary"/>} label="Puntual Mensual" />
-                <FormControlLabel value="PUNTUAL_ALEATORIA" control={<Radio color="secondary"/>} label="Puntual Aleatoria" />
                 <FormControlLabel value="SEMANAL" control={<Radio color="secondary"/>} label="Semanal" />
                 <FormControlLabel value="MENSUAL" control={<Radio color="secondary"/>} label="Mensual" />
+                <FormControlLabel value="PUNTUAL_SEMANAL" control={<Radio color="secondary"/>} label="Dia de la semana" />
+                <FormControlLabel value="PUNTUAL_MENSUAL" control={<Radio color="secondary"/>} label="Dia del mes" />
               </RadioGroup>
             </FormControl>
           </Grid>

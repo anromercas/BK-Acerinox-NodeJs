@@ -8,6 +8,7 @@ import { GlobalProvider } from './context/GlobalState';
 //import './App.css';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+
 const theme = createMuiTheme({
   palette: {
     primary: {

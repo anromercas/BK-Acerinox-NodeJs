@@ -35,7 +35,7 @@ exports.getLatest = async (req, res, next) => {
 // @access  Public
 exports.getAuditors = async (req, res, next) => {
   try {
-    const auditors = await Auditor.find({role: {$ne: 'ADMINISTRATOR'}, active: true}, 'firstname lastname fullname avatar role');
+    const auditors = await Auditor.find({role: {$ne: 'ADMINISTRATOR'}, active: true}, 'firstname lastname fullname avatar role department');
 
     return res.status(200).json({
       success: true,

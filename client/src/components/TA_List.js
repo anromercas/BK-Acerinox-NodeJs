@@ -60,6 +60,7 @@ export const TA_List = ({values, handleFunction, primaryDisplayKey, sectionKey})
   const [selectedIndex, setSelectedIndex] = useState([]);
   const classes = useStyles();
   let valuesBySection = {};
+
   const handleListItemClick = (event, sectionId, index) => {
     //event.preventDefault();
     setSelectedIndex([sectionId, index]);
@@ -76,29 +77,17 @@ export const TA_List = ({values, handleFunction, primaryDisplayKey, sectionKey})
     }
     //console.log('***valuesBySection: ' + JSON.stringify(valuesBySection));
   
-   
-
   if (sectionKey === undefined)
     return (
       <List className={classes.root} component="nav" aria-label="secondary mailbox folder">
-        {(values === undefined || values === null) ? "" : values.map((value, index) => 
+        {
+        (values === undefined || values === null) ? "" : values.map((value, index) => 
           (<ListItem
             button
             selected={selectedIndex.toString() === [undefined, index].toString()}
             onClick={(event) => handleListItemClick(event, undefined, index)}>
-                 {value.avatar ? <Avatar alt="A.M." src={value.avatar} className={classes.large} /> : "" }
-                 <ListItemText primary={value[primaryDisplayKey]} secondary={value['role']}/>
-              { value.role === 'WORKER'? 
-                <StyledBadge 
-                  overlap="circle"
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                  }}
-                  variant="dot">
-                </StyledBadge> :
-                "" }
-         
+              {value.avatar ? <Avatar alt="A.M." src={value.avatar} className={classes.large} /> : "" }
+              <ListItemText primary={value[primaryDisplayKey]} />
           </ListItem>))
         }
       </List> )
@@ -108,7 +97,7 @@ export const TA_List = ({values, handleFunction, primaryDisplayKey, sectionKey})
       {Object.keys(valuesBySection).map((sectionId) => (
         <li key={`section-${sectionId}`} className={classes.listSection}>
           <ul className={classes.ul}>
-            <ListSubheader color="terciary">
+            <ListSubheader>
               <Chip label={`${sectionId}`}/>
             </ListSubheader>
             {valuesBySection[sectionId].map((item, index) => (
@@ -117,7 +106,7 @@ export const TA_List = ({values, handleFunction, primaryDisplayKey, sectionKey})
               selected={selectedIndex.toString() === [sectionId, index].toString()}
               onClick={(event) => handleListItemClick(event, sectionId, index)}>
                 {item.avatar ? <Avatar alt="A.M." src={item.avatar} /> : "" }
-                <ListItemText primary={`${item.name}`} />
+                <ListItemText primary={`${item[primaryDisplayKey]}`} />
               </ListItem>
             ))}
           </ul>

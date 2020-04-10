@@ -23,7 +23,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'lastname is required'] 
   },
-  department: String,
+  department: {
+    type: String
+  },
   role: {
     type: String,
     enum: ['AUDITOR', 'ADMINISTRATOR', 'WORKER', "EXTERN"],
