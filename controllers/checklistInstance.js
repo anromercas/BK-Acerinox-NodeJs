@@ -6,7 +6,9 @@ const Checklist = require('../models/Checklist');
 // @access  Public
 exports.getChecklistInstances = async (req, res, next) => {
   try {
-    const checklistinstances = await ChecklistInstance.find();
+    const checklistinstances = await ChecklistInstance
+    .find()
+    .populate([{path: 'user_id', select: 'fullname -_id'}, {path: 'checklist_id', select: 'name -_id'}]);
 
     return res.status(200).json({
       success: true,

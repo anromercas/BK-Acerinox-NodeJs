@@ -6,6 +6,12 @@ export default (state, action) => {
         loading: false,
         checklists: action.payload
       }
+    case 'GET_CHECKLIST_INSTANCES':
+      return {
+        ...state,
+        loading: false,
+        checklistInstances: action.payload
+      }
     case 'GET_AUDITORS':
       return {
         ...state,
@@ -21,7 +27,7 @@ export default (state, action) => {
     case 'DELETE_CHECKLIST_INSTANCE':
       return {
         ...state,
-        //checklistInstances: state.checklists.filter(checklist => checklist._id !== action.payload),
+        checklistInstances: state.checklists.filter(checklist => checklist._id !== action.payload),
         latests: state.latests.filter(checklist => checklist._id !== action.payload)
       }
     case 'ADD_CHECKLIST':
@@ -32,6 +38,7 @@ export default (state, action) => {
     case 'ADD_CHECKLIST_INSTANCE':
       return {
         ...state,
+        checklistInstances: [action.payload, ...state.checklistInstances],
         latests: [action.payload, ...state.latests].splice(0, 10)
       }
     case 'TA_ERROR':

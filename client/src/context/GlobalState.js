@@ -5,6 +5,7 @@ import axios from 'axios';
 // Initial state
 const initialState = {
   checklists: [],
+  checklistInstances: [],
   latests: [],
   auditors: [],
   error: null,
@@ -41,6 +42,22 @@ export const GlobalProvider = ({ children }) => {
 
       dispatch({
         type: 'GET_CHECKLISTS',
+        payload: res.data.data
+      });
+    } catch (err) {
+      dispatch({
+        type: 'TA_ERROR',
+        payload: err.response.data.error
+      });
+    }
+  }
+
+  async function getChecklistInstances() {
+    try {
+      const res = await axios.get('/api/v1/checklistInstances');
+
+      dispatch({
+        type: 'GET_CHECKLIST_INSTANCES',
         payload: res.data.data
       });
     } catch (err) {
@@ -129,12 +146,14 @@ export const GlobalProvider = ({ children }) => {
 
   return (<GlobalContext.Provider value={{
     checklists: state.checklists,
+    checklistInstances: state.checklistInstances,
     auditors: state.auditors,
     latests: state.latests,
     error: state.error,
     loading: state.loading,
     getAuditors,
     getChecklists,
+    getChecklistInstances,
     getLatests,
     addChecklist,
     addChecklistInstance,

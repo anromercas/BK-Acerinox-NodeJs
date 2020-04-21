@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { GlobalContext } from '../context/GlobalState';
+import { GlobalContext } from '../../context/GlobalState';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
@@ -24,10 +24,12 @@ import {
 } from '@material-ui/pickers';
 import { Icon } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
+import { Header } from './Header';
 import { TA_List } from './TA_List';
 import { TA_Menu } from './TA_Menu';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { TA_Latests } from './TA_Latests';
+import { TA_Table } from './TA_Table';
 //require('../utils/typeExtension');
 // import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 // import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
@@ -99,6 +101,7 @@ export const TaskAssigner = () => {
     return result;
   }
   return (
+    
     <Grid container spacing={3}>
       <Grid item xs={4} md={4} lg={4}>
         <Paper>
@@ -168,6 +171,9 @@ export const TaskAssigner = () => {
     <Grid item xs={6} md={6} lg={6}>
       <FormLabel component="legend">Últimas asignadas</FormLabel>
       <TA_Latests />
+    </Grid>
+    <Grid item item xs={12} md={12} lg={12}>
+      <TA_Table />
     </Grid>
   </Grid>
   )

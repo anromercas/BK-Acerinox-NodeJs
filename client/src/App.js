@@ -1,13 +1,26 @@
 import React from 'react';
-import { Header } from './components/Header';
-import { AddTask } from './components/AddTask';
-import { TaskAssigner } from "./components/TaskAssigner"
+import { Header } from './components/TaskManager/Header';
+import { AddTask } from './components/TaskManager/AddTask';
+import { TaskAssigner } from "./components/TaskManager/TaskAssigner"
 
 import { GlobalProvider } from './context/GlobalState';
 
 //import './App.css';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper'; 
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import AssignmentIndRoundedIcon from '@material-ui/icons/AssignmentIndRounded';
+import TimelineRoundedIcon from '@material-ui/icons/TimelineRounded';
+import { Grid } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  root: {
+    flexGrow: 1,
+    
+  },
+});
 
 const theme = createMuiTheme({
   palette: {
@@ -33,14 +46,32 @@ const theme = createMuiTheme({
   },
 });
 function App() {
+  const classes = useStyles();
+  const [tab, setTab] = React.useState(0);
+  const selectTab = (event, newValue) => {
+    setTab(newValue);
+  };
   return (
       <GlobalProvider>
-        <Container maxWidth="lg">
-          <Header />
-            <ThemeProvider theme={theme}>
-               <TaskAssigner />
-            </ThemeProvider>
-        </Container>
+        <ThemeProvider theme={theme}>
+          <Container maxWidth="lg">
+            <Paper elevation={0} className={classes.root}>
+              <Tabs
+                value={tab}
+                onChange={selectTab}
+                variant="standard"
+                indicatorColor=""
+                textColor="primary"
+                aria-label="main menu tabs"
+                centered
+              >
+                <Tab icon={<AssignmentIndRoundedIcon />} label="Asignador" />
+                <Tab icon={<TimelineRoundedIcon />} label="Estadísticas" />
+              </Tabs>
+            </Paper>
+            {tab === 0 && <TaskAssigner />} 
+          </Container>
+        </ThemeProvider>
       </GlobalProvider>
   );
 }

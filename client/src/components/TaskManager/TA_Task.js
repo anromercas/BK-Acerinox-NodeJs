@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { GlobalContext } from '../context/GlobalState';
+import { GlobalContext } from '../../context/GlobalState';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded';
 

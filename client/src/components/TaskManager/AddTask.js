@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { GlobalContext } from '../context/GlobalState';
-import { today } from '../utils/format';
+import { GlobalContext } from '../../context/GlobalState';
+import { today } from '../../utils/format';
 import Button from '@material-ui/core/Button';
 
 export const AddTask = () => {

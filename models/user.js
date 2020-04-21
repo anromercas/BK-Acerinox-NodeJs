@@ -38,8 +38,8 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String
   }
-}, {timestamps: true});
-userSchema.virtual('fullname').get(() => this.firstname +  " " + this.lastname );
+}, {timestamps: true});//, toJSON: { virtuals: true }});
+//userSchema.virtual('fullname').get(() => `${this.firstName} ${this.lastName}` );
 // excerpt from http://devsmash.com/blog/password-authentication-with-mongoose-and-bcrypt
 userSchema.pre('save', function(next) {
   var user = this;

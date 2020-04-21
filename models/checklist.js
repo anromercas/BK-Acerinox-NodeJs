@@ -19,6 +19,7 @@ const ChecklistSchema = new mongoose.Schema({
   department: {
     type: String
   },
+  thumbnail: String,
   maxOverdueDays: Number,
   checkpoints: [{
     name: String,

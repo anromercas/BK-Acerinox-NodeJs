@@ -48,7 +48,6 @@ export const TA_Menu = ({tabNames, icons, handleSelection}) => {
         aria-label="icon label tabs example"
       >
         {tabNames.map((tab, index) => <Tab icon={getIcon(icons[index])} label={tab} />)}
-
       </Tabs>
     </Paper>
   );

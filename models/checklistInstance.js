@@ -47,6 +47,16 @@ const checklistInstanceSchema = new mongoose.Schema({
       value: String
     }]
   }]
-}, {timestamps: true});
-
+},{
+    timestamps: true,
+    toJSON: {virtuals: true}
+  }
+);
+// checklistInstanceSchema.virtual('checklistName', {
+//   ref: 'Checklist',
+//   foreignField: '_id',
+//   localField: 'checklist_id',
+//   justOne: true,
+//   options: {select: 'name'}
+// });
 module.exports = mongoose.model('ChecklistInstance', checklistInstanceSchema);
