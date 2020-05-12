@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { getChecklistInstances, addChecklistInstance, deleteChecklistInstance } = require('../controllers/checklistInstance');
+const { getChecklistInstances, addChecklistInstance, deleteChecklistInstance, updateChecklistInstanceStatus } = require('../controllers/checklistInstance');
 
 router
   .route('/')
   .get(getChecklistInstances)
-  .post(addChecklistInstance)
+  .post(addChecklistInstance);
 
-  router
+router
   .route('/:id')
-  .delete(deleteChecklistInstance);
+  .delete(deleteChecklistInstance)
+
+router
+  .route('/:newStatus')
+  .put(updateChecklistInstanceStatus);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { statusEnum, statusEnumDefault, subTypeEnum, subTypeEnumDefault, lineTypeEnum, lineTypeEnumDefault} = require('./checklistInstanceEnums');
 
 const checklistInstanceSchema = new mongoose.Schema({
   user_id: {
@@ -13,13 +14,13 @@ const checklistInstanceSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['ASSIGNED', 'REVIEW-PENDING', 'REVIEWED'],
-    default: 'ASSIGNED'
+    enum: Object.keys(statusEnum),
+    default: statusEnumDefault
   },
   subType: {
     type: String,
-    enum: ['PUNTUAL', 'PUNTUAL-ALEATORIA', 'PUNTUAL-SEMANAL', 'PUNTUAL-MENSUAL', 'SEMANAL', 'MENSUAL'],
-    default: 'PUNTUAL'
+    enum: Object.keys(subTypeEnum),
+    default: subTypeEnumDefault
   },
   startDate: Date,
   dueDate: Date,
@@ -33,10 +34,14 @@ const checklistInstanceSchema = new mongoose.Schema({
   signingInfo: String,
   content: [{
     name: String,
+    score: {
+      type: Number,
+      enum: [0, 1, 2, 3, 4, 5]
+    },
     type: {
       type: String,
-      enum: ['FREE_LINE', 'FIXED_LINE'],
-      default: 'FREE_LINE'
+      enum: Object.keys(lineTypeEnum),
+      default: lineTypeEnum.FREE_LINE
     },
     freeValues: [{
       images: [String],
@@ -59,4 +64,17 @@ const checklistInstanceSchema = new mongoose.Schema({
 //   justOne: true,
 //   options: {select: 'name'}
 // });
+// const validateStatus = (currentStatus, newStatus) => {
+//   let result = false;
+//   //TODO: Improve this! ****ing javascript
+//   const ASSIGNED = statusEnum.ASSIGNED;
+//   const REVIEW_PENDING = statusEnum.REVIEW_PENDING;
+//   const REVIEWED = statusEnum.REVIEWED;
+//   const validNextStatus = {
+//     'ASSIGNED': [REVIEW_PENDING],
+//     'REVIEW_PENDING': [ASSIGNED, REVIEWED],
+//     'REVIEWED': []
+//   };
+//   return validateStatus[currentStatus].includes(nexStatus);
+// };
 module.exports = mongoose.model('ChecklistInstance', checklistInstanceSchema);

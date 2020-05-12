@@ -27,7 +27,7 @@ export default (state, action) => {
     case 'DELETE_CHECKLIST_INSTANCE':
       return {
         ...state,
-        checklistInstances: state.checklists.filter(checklist => checklist._id !== action.payload),
+        checklistInstances: state.checklistInstances.filter(checklist => checklist._id !== action.payload),
         latests: state.latests.filter(checklist => checklist._id !== action.payload)
       }
     case 'ADD_CHECKLIST':
@@ -40,6 +40,14 @@ export default (state, action) => {
         ...state,
         checklistInstances: [action.payload, ...state.checklistInstances],
         latests: [action.payload, ...state.latests].splice(0, 10)
+      }
+    case 'UPDATE_CHECKLIST_INSTANCE':
+      const checklistInstances = state.checklistInstances.filter(checklist => checklist._id !== action.payload);
+      const latests = state.latests.filter(checklist => checklist._id !== action.payload);
+      return {
+        ...state,
+        checklistInstances: [action.payload, ...checklistInstances],
+        latests: [action.payload, ...latests].splice(0, 10)
       }
     case 'TA_ERROR':
       return {

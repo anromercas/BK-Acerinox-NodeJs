@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import { TA_Task } from './TA_Task';
 
-import { GlobalContext } from '../../context/GlobalState';
+import { GlobalContext } from '../../../context/GlobalState';
 
 export const TA_Latests = () => {
   const { latests, getLatests } = useContext(GlobalContext);

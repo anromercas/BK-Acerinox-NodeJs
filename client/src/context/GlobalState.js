@@ -143,6 +143,29 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
+  
+  async function updateChecklistInstanceStatus(checklistInstance, newStatus) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    try {
+      const res = await axios.put(`/api/v1/checklistInstances/${newStatus}`, checklistInstance, config);
+      console.log("globalstate update checklistInstance: ", JSON.stringify(checklistInstance));
+      console.log("globalstate newStatus: ", newStatus);
+      dispatch({
+        type: 'UPDATE_CHECKLIST_INSTANCE',
+        payload: res.data.data
+      });
+    } catch (err) {
+      dispatch({
+        type: 'TA_ERROR',
+        payload: err.response.data.error
+      });
+    }
+  }
 
   return (<GlobalContext.Provider value={{
     checklists: state.checklists,
@@ -158,6 +181,7 @@ export const GlobalProvider = ({ children }) => {
     addChecklist,
     addChecklistInstance,
     deleteChecklistInstance,
+    updateChecklistInstanceStatus
   }}>
     {children}
   </GlobalContext.Provider>);

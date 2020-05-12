@@ -1,8 +1,8 @@
 import React from 'react';
 import { Header } from './components/TaskManager/Header';
 import { AddTask } from './components/TaskManager/AddTask';
-import { TaskAssigner } from "./components/TaskManager/TaskAssigner"
-
+import { TaskAssigner } from './components/TaskManager/TaskAssigner';
+import { TA_Statistics } from './components/Statistics/TA_Statistics';
 import { GlobalProvider } from './context/GlobalState';
 
 //import './App.css';
@@ -70,6 +70,7 @@ function App() {
               </Tabs>
             </Paper>
             {tab === 0 && <TaskAssigner />} 
+            {tab === 1 && <TA_Statistics />}
           </Container>
         </ThemeProvider>
       </GlobalProvider>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GlobalContext } from "../../context/GlobalState";
+import { GlobalContext } from "../../../context/GlobalState";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -10,55 +10,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import { TA_TableRow } from './TA_TableRow';
+import { TA_Columns } from './TA_Columns';
 
-const columns = [
-  { id: 'checklist_id.name', 
-    label: 'Checklist',
-    align: 'left' 
-  //minWidth: 170
- },
-  { 
-    id: 'subType', 
-    label: 'Frecuencia',
-    align: 'left'
-    //minWidth: 100 
-  },
-  {
-    id: 'startDate',
-    label: 'Comienza...',
-    //minWidth: 170,
-    align: 'left',
-    format: (value) => Date(value).toLocaleString(),
-  },
-  {
-    id: 'dueDate',
-    label: 'Expira...',
-    //minWidth: 170,
-    align: 'left',
-    format: (value) => Date(value).toLocaleString(),
-  },
-  {
-    id: 'user_id.fullname',
-    label: 'Auditor',
-    //minWidth: 170,
-    align: 'left'
-    //format: (value) => value.toFixed(2),
-  },
-  {
-    id: 'status',
-    label: 'Estado',
-    //minWidth: 170,
-    align: 'left'
-    //format: (value) => value.toFixed(2),
-  },
-  {
-    id: 'actions',
-    label: 'Actions',
-    //minWidth: 170,
-    align: 'right',
-    //format: (value) => value.toFixed(2),
-  }
-];
 
 const useStyles = makeStyles({
   root: {
@@ -74,7 +27,7 @@ export const TA_Table = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { checklistInstances, getChecklistInstances } = useContext(GlobalContext);
-
+  const columns = TA_Columns();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
