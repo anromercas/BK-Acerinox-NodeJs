@@ -9,7 +9,7 @@ exports.getChecklistInstances = async (req, res, next) => {
   try {
     const checklistinstances = await ChecklistInstance
     .find()
-    .populate([{path: 'user_id', select: 'fullname -_id'}, {path: 'checklist_id', select: 'name -_id'}]);
+    .populate([{path: 'user_id', select: 'fullname -_id'}, {path: 'checklist_id', select: 'name -_id department'}]);
 
     return res.status(200).json({
       success: true,
@@ -56,7 +56,7 @@ exports.addChecklistInstance = async (req, res, next) => {
         });
         const aNewChklInst = {...instanceValues, content};
         const newChecklistInstance = await ChecklistInstance.create(aNewChklInst);
-        const filledNewChkInstance = await ChecklistInstance.findById(newChecklistInstance._id).populate('checklist_id', 'name').populate('user_id', 'fullname');
+        const filledNewChkInstance = await ChecklistInstance.findById(newChecklistInstance._id).populate([{path: 'checklist_id', select: 'name department'}, {path: 'user_id', select: 'fullname'}]);
         console.log("** newChecklistInstance " + JSON.stringify(filledNewChkInstance));
        
         //console.log("filledNewChkInstance " + JSON.stringify(filledNewChkInstance));
