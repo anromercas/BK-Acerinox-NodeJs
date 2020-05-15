@@ -14,6 +14,7 @@ import Tab from '@material-ui/core/Tab';
 import AssignmentIndRoundedIcon from '@material-ui/icons/AssignmentIndRounded';
 import TimelineRoundedIcon from '@material-ui/icons/TimelineRounded';
 import { Grid } from '@material-ui/core';
+import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles({
   root: {
@@ -23,6 +24,11 @@ const useStyles = makeStyles({
 });
 
 const theme = createMuiTheme({
+  alternate: {
+    palette: {
+      primary: green
+    }
+  },
   palette: {
     primary: {
       // light: will be calculated from palette.primary.main,

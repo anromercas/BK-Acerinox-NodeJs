@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback, useMemo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { GlobalContext } from '../../context/GlobalState';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -30,20 +30,16 @@ import { TA_Menu } from './TA_Menu';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { TA_Latests } from './Latests/TA_Latests';
 import { TA_Table } from './TaskWorkflow/TA_Table';
+import green from '@material-ui/core/colors/green';
 //require('../utils/typeExtension');
 // import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 // import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
+});
 Date.prototype.addDays = function(days) {
   var date = new Date(this.valueOf());
   date.setDate(date.getDate() + days);
@@ -132,9 +128,11 @@ export const TaskAssigner = () => {
             </Paper>
           </Grid>
           <Grid item xs={2}>
-            <Button variant="contained" size="large" startIcon={<ArrowForwardIosIcon />} onClick={() => createNewTask()}>
-              Asignar
-            </Button>
+            <ThemeProvider theme={theme}>
+              <Button variant="contained" size="large" color="primary" startIcon={<ArrowForwardIosIcon />} onClick={() => createNewTask()}>
+                Asignar
+              </Button>
+            </ThemeProvider>
           </Grid>
         </Grid> 
       </Grid>

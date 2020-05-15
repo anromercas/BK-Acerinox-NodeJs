@@ -44,7 +44,7 @@ export const TA_TableRow = ({ columns, row }) => {
     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={columns.length}>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Box margin={1}>
-         <TA_TableRowDetails />
+         <TA_TableRowDetails row={row}/>
         </Box>
        </Collapse>
     </TableCell>

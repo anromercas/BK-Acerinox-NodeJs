@@ -10,7 +10,6 @@ exports.getChecklistInstances = async (req, res, next) => {
     const checklistinstances = await ChecklistInstance
     .find()
     .populate([{path: 'user_id', select: 'fullname -_id'}, {path: 'checklist_id', select: 'name -_id department'}]);
-
     return res.status(200).json({
       success: true,
       count: checklistinstances.length,

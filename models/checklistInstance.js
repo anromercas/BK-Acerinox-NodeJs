@@ -48,8 +48,8 @@ const checklistInstanceSchema = new mongoose.Schema({
       text: String
     }],
     fixedValues: [{
-      type: String, //this refers to the type of the value (i.e: {type: boolean, value: "3"})
-      value: String
+      _type: String, //this refers to the type of the value (i.e: {type: boolean, value: "3"})
+      _value: String
     }]
   }]
 },{
