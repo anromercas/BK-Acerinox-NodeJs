@@ -12,6 +12,7 @@ connectDB();
 const checklists = require('./routes/checklists');
 const checklistInstances = require('./routes/checklistInstances');
 const queries = require('./routes/queries');
+const users = require('./routes/users');
 
 const app = express();
 
@@ -24,6 +25,7 @@ if(process.env.NODE_ENV === 'development') {
 app.use('/api/v1/checklists', checklists);
 app.use('/api/v1/checklistInstances', checklistInstances);
 app.use('/api/v1/queries', queries);
+app.use('/api/v1/users', users);
 
 if(process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

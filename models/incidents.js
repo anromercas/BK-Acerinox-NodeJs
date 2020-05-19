@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const { lineTypeEnum, lineTypeEnumDefault} = require('./checklistInstanceEnums');
 
-const checklistInstanceSchema = new mongoose.Schema({
+const incidentSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -13,7 +12,7 @@ const checklistInstanceSchema = new mongoose.Schema({
   category: {
     type: String,
     enum: []//categorías
-  }
+  },
   signingDate: Date,
   signingInfo: String,
   content: [{
@@ -29,4 +28,4 @@ const checklistInstanceSchema = new mongoose.Schema({
   }
 );
 
-module.exports = mongoose.model('ChecklistInstance', checklistInstanceSchema);
+module.exports = mongoose.model('Incidents', incidentSchema);
