@@ -25,7 +25,7 @@ export const Checklist = ({height}) => {
   return (
     <Grid container direction="column" justify="center" alignItems="center">
       <Grid item xs>
-        <Typography variant="h6" color="textSecondary" align="left">
+        <Typography variant="h5" color="textSecondary" align="left">
           Checklist
         </Typography>
         <IncidentsByMonthOrYear type={"checklist"}/>

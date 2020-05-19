@@ -1,6 +1,7 @@
 import React from 'react'
 import Box from '@material-ui/core/Box'
 import { ResponsiveBar } from '@nivo/bar'
+import Typography from '@material-ui/core/Typography'
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
 // no chart will be rendered.
@@ -9,43 +10,43 @@ import { ResponsiveBar } from '@nivo/bar'
 const data = [
   {
     "country": "Enero",
-    "Acería": 148,
+    "Acería": 48,
     "AceríaColor": "hsl(299, 70%, 50%)",
     "Office": 75,
     "OfficeColor": "hsl(103, 70%, 50%)",
-    "Corte": 104,
+    "Corte": 14,
     "CorteColor": "hsl(19, 70%, 50%)",
     "Distribución": 59,
     "DistribuciónColor": "hsl(327, 70%, 50%)",
-    "Limpieza": 199,
+    "Limpieza": 99,
     "LimpiezaColor": "hsl(334, 70%, 50%)",
-    "Transporte": 154,
+    "Transporte": 54,
     "TransporteColor": "hsl(204, 70%, 50%)"
   },
   {
     "country": "Febrero",
     "Acería": 88,
     "AceríaColor": "hsl(66, 70%, 50%)",
-    "Office": 146,
+    "Office": 46,
     "OfficeColor": "hsl(30, 70%, 50%)",
     "Corte": 11,
     "CorteColor": "hsl(105, 70%, 50%)",
     "Distribución": 23,
     "DistribuciónColor": "hsl(292, 70%, 50%)",
-    "Limpieza": 187,
+    "Limpieza": 87,
     "LimpiezaColor": "hsl(36, 70%, 50%)",
     "Transporte": 40,
     "TransporteColor": "hsl(347, 70%, 50%)"
   },
   {
     "country": "Marzo",
-    "Acería": 120,
+    "Acería": 20,
     "AceríaColor": "hsl(275, 70%, 50%)",
-    "Office": 199,
+    "Office": 99,
     "OfficeColor": "hsl(259, 70%, 50%)",
-    "Corte": 161,
+    "Corte": 61,
     "CorteColor": "hsl(36, 70%, 50%)",
-    "Distribución": 178,
+    "Distribución": 78,
     "DistribuciónColor": "hsl(222, 70%, 50%)",
     "Limpieza": 8,
     "LimpiezaColor": "hsl(343, 70%, 50%)",
@@ -56,24 +57,24 @@ const data = [
     "country": "Abril",
     "Acería": 33,
     "AceríaColor": "hsl(326, 70%, 50%)",
-    "Office": 171,
+    "Office": 71,
     "OfficeColor": "hsl(183, 70%, 50%)",
-    "Corte": 112,
+    "Corte": 12,
     "CorteColor": "hsl(351, 70%, 50%)",
-    "Distribución": 149,
+    "Distribución": 49,
     "DistribuciónColor": "hsl(209, 70%, 50%)",
-    "Limpieza": 122,
+    "Limpieza": 22,
     "LimpiezaColor": "hsl(234, 70%, 50%)",
-    "Transporte": 122,
+    "Transporte": 22,
     "TransporteColor": "hsl(293, 70%, 50%)"
   },
   {
     "country": "Mayo",
-    "Acería": 162,
+    "Acería": 62,
     "AceríaColor": "hsl(287, 70%, 50%)",
     "Office": 91,
     "OfficeColor": "hsl(124, 70%, 50%)",
-    "Corte": 102,
+    "Corte": 10,
     "CorteColor": "hsl(283, 70%, 50%)",
     "Distribución": 86,
     "DistribuciónColor": "hsl(334, 70%, 50%)",
@@ -84,15 +85,15 @@ const data = [
   },
   {
     "country": "Junio",
-    "Acería": 133,
+    "Acería": 33,
     "AceríaColor": "hsl(244, 70%, 50%)",
-    "Office": 163,
+    "Office": 63,
     "OfficeColor": "hsl(56, 70%, 50%)",
     "Corte": 51,
     "CorteColor": "hsl(90, 70%, 50%)",
-    "Distribución": 152,
+    "Distribución": 52,
     "DistribuciónColor": "hsl(339, 70%, 50%)",
-    "Limpieza": 146,
+    "Limpieza": 46,
     "LimpiezaColor": "hsl(73, 70%, 50%)",
     "Transporte": 8,
     "TransporteColor": "hsl(289, 70%, 50%)"
@@ -101,26 +102,32 @@ const data = [
     "country": "Julio",
     "Acería": 83,
     "AceríaColor": "hsl(207, 70%, 50%)",
-    "Office": 189,
+    "Office": 89,
     "OfficeColor": "hsl(136, 70%, 50%)",
     "Corte": 78,
     "CorteColor": "hsl(164, 70%, 50%)",
-    "Distribución": 117,
+    "Distribución": 17,
     "DistribuciónColor": "hsl(156, 70%, 50%)",
-    "Limpieza": 140,
+    "Limpieza": 40,
     "LimpiezaColor": "hsl(139, 70%, 50%)",
-    "Transporte": 193,
+    "Transporte": 93,
     "TransporteColor": "hsl(262, 70%, 50%)"
   }
 ]
 export const Fulfillment = () => (
+  <>
+  <br/>
+  <br/>
+  <Typography variant="h6" align="center" color="textSecondary">
+    % realización por departamento
+  </Typography>
   <Box height={500} width="100%">
     <Box height="90%" mx={0.5} width="100%" display="inline-block">
       <ResponsiveBar
           data={data}
           keys={[ 'Acería', 'Office', 'Corte', 'Distribución', 'Limpieza', 'Transporte' ]}
           indexBy="country"
-          margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+          margin={{ top: 25, right: 130, bottom: 50, left: 60 }}
           padding={0.3}
           colors={{ scheme: 'nivo' }}
           defs={[
@@ -168,14 +175,15 @@ export const Fulfillment = () => (
               legendPosition: 'middle',
               legendOffset: 32
           }}
-          axisLeft={{
-              tickSize: 5,
-              tickPadding: 5,
-              tickRotation: 0,
-              legend: '%realización',
-              legendPosition: 'middle',
-              legendOffset: -40
-          }}
+          axisLeft={null}
+          // axisLeft={{
+          //     tickSize: 5,
+          //     tickPadding: 5,
+          //     tickRotation: 0,
+          //     legend: '%realización',
+          //     legendPosition: 'middle',
+          //     legendOffset: -40
+          // }}
           labelSkipWidth={12}
           labelSkipHeight={12}
           labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
@@ -212,5 +220,5 @@ export const Fulfillment = () => (
 
   </Box>
 </Box>
-   
+</>
 )

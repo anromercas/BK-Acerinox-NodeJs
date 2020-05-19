@@ -7,6 +7,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import axios from 'axios'
+import Typography from '@material-ui/core/Typography'
 
 //  const data = [
 //   {
@@ -298,6 +299,10 @@ export const IncidentsByMonthOrYear = ({type}) => {
   }, [checklistByMonthYear]);
 
   return (
+    <>
+    <Typography variant="h6" align="center" color="textSecondary">
+      nota media por departamento
+    </Typography>
     <Box height={500} width="100%">
       <Box height="90%" mx={0.5} width="100%" display="inline-block">
         <ResponsiveLine
@@ -321,7 +326,7 @@ export const IncidentsByMonthOrYear = ({type}) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: '# Incidencias',
+            legend: 'nota media',
             legendOffset: -40,
             legendPosition: 'middle'
         }}
@@ -372,6 +377,7 @@ export const IncidentsByMonthOrYear = ({type}) => {
         </FormControl> */}
       </Box>
     </Box>
+    </>
   )
 }
 

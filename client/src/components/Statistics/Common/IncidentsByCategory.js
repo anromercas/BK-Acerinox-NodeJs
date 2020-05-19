@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ResponsiveLine } from '@nivo/line'
 import Box from '@material-ui/core/Box'
 import axios from 'axios'
-
+import Typography from '@material-ui/core/Typography'
 //  const data = [
 //   {
 //     "id": "Acería",
@@ -291,6 +291,10 @@ export const IncidentsByCategory = () => {
     retrieveData();
   }, []);
   return (
+    <>
+    <Typography variant="h6" align="center" color="textSecondary">
+      top 5 problemas
+    </Typography>
     <Box height={500} width="100%">
       <Box height="90%" mx={0.5} width="100%" display="inline-block">
         <ResponsiveLine
@@ -314,7 +318,7 @@ export const IncidentsByCategory = () => {
               tickSize: 5,
               tickPadding: 5,
               tickRotation: 0,
-              legend: '# Incidencias',
+              legend: 'nota media',
               legendOffset: -40,
               legendPosition: 'middle'
           }}
@@ -358,7 +362,7 @@ export const IncidentsByCategory = () => {
 
       </Box>
     </Box>
-   
+   </>
     
   )
 }

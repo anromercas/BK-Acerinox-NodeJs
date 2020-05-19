@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { GlobalContext } from '../../../context/GlobalState'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
@@ -24,26 +25,22 @@ const theme = createMuiTheme({
   }
 });
 export const TA_TableRowDetails = ({row}) => {
-  function updateTaskStatus(event, action){
+  const { updateChecklistInstanceStatus } = useContext(GlobalContext);
+  const [ comments, setComments ] = useState(row.comments.reduce((prev, current) => prev.concat(current + '\n'), ''));
+
+
+  async function updateTaskStatus(event, action){
     event.preventDefault();
-    switch (action){
-      case 'OK':
-        console.log(action);
-        break;
-      case 'NOK':
-        console.log(action);
-        break;
-      default: 
-        console.log(action);
-        break;
-    }
+    row.comments = [comments];
+    console.log('row.comments ' + row.comments);
+   const res = await updateChecklistInstanceStatus(row, action);
   }
   function exportToPdf(event){
     event.preventDefault();
     console.log("To PDF document");
     //export document to PDF
   }
-  console.log('Row: ', row);
+  console.log('!Row: ', row);
   return (
     <Grid container spacing={3}>
       {row.content !== undefined && row.content.map(checkpoint => {
@@ -69,8 +66,9 @@ export const TA_TableRowDetails = ({row}) => {
             placeholder="Introduzca sus comentarios"
             multiline
             variant="outlined"
-            defaultValue={"Ningún comentario aún"}
+            defaultValue={comments} 
             rows={8}
+            onChange={(event) => setComments(event.target.value)}
           />
       </Grid>
       <Grid item xs={4}>
@@ -127,16 +125,7 @@ const FreelinesContent = ({checkpoint}) => {
   const classes = useStyles();
   const [image, setImage] = useState('');
   const [showImage, setShowImage] = useState(false);
-  // useEffect(() => {
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   setShowImage(!showImage);
-  // }, [image]);
-  // const showImage = () => {
-  //   setShowImage(true);
-  // }
-  // const closeImage = () => {
-  //   setShowImage(false)
-  // }
+
   const handleOnClickImage = (newImage) => {
     setImage(newImage);
     setShowImage(newImage !== '' ? true : false );

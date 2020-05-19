@@ -51,7 +51,8 @@ const checklistInstanceSchema = new mongoose.Schema({
       _type: String, //this refers to the type of the value (i.e: {type: boolean, value: "3"})
       _value: String
     }]
-  }]
+  }],
+  comments: [String]
 },{
     timestamps: true,
     toJSON: {virtuals: true}
@@ -64,17 +65,20 @@ const checklistInstanceSchema = new mongoose.Schema({
 //   justOne: true,
 //   options: {select: 'name'}
 // });
-// const validateStatus = (currentStatus, newStatus) => {
-//   let result = false;
-//   //TODO: Improve this! ****ing javascript
-//   const ASSIGNED = statusEnum.ASSIGNED;
-//   const REVIEW_PENDING = statusEnum.REVIEW_PENDING;
-//   const REVIEWED = statusEnum.REVIEWED;
-//   const validNextStatus = {
-//     'ASSIGNED': [REVIEW_PENDING],
-//     'REVIEW_PENDING': [ASSIGNED, REVIEWED],
-//     'REVIEWED': []
-//   };
-//   return validateStatus[currentStatus].includes(nexStatus);
-// };
-module.exports = mongoose.model('ChecklistInstance', checklistInstanceSchema);
+exports.validateStatus = (currentStatus, newStatus) => {
+  let result = false;
+  //TODO: Improve this! ****ing javascript
+  const ASIGNADA = statusEnum.ASIGNADA;
+  const EN_REVISION = statusEnum.EN_REVISION;
+  const OK = statusEnum.OK;
+  const NOK = statusEnum.NOK;
+
+  const validNextStatus = {
+    'ASIGNADA': [EN_REVISION],
+    'EN_REVISION': [OK, NOK],
+    'NOK': [EN_REVISION],
+    'OK': []
+  };
+  return validNextStatus[currentStatus].includes(newStatus);
+};
+exports.ChecklistInstance = mongoose.model('ChecklistInstance', checklistInstanceSchema);

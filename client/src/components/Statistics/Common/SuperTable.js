@@ -12,6 +12,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles({
   table: {
@@ -28,6 +29,10 @@ export const SuperTable = ({columns, rows}) => {
   const classes = useStyles();
   return (
     <>
+    <Typography variant="h6" align="center" color="textSecondary">
+      nota media por tipo de incidencia
+    </Typography>
+    
     <Grid container direction="row" justify="center" alignItems="center">
       <Grid item xs>
         <FormLabel component="legend">Desde</FormLabel>

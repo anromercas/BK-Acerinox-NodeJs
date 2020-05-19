@@ -1,9 +1,10 @@
 exports.statusEnum = Object.freeze({
-  ASSIGNED: 'ASSIGNED', 
-  REVIEW_PENDING: 'REVIEW_PENDING',
-  REVIEWED: 'REVIEWED'
+  ASIGNADA: 'ASIGNADA', 
+  EN_REVISION: 'EN_REVISION',
+  OK: 'OK',
+  NOK: 'NOK'
 });
-exports.statusEnumDefault = this.statusEnum.ASSIGNED;
+exports.statusEnumDefault = this.statusEnum.ASIGNADA;
 exports.subTypeEnum = Object.freeze({
   PUNTUAL: 'PUNTUAL',
   PUNTUAL_ALEATORIA: 'PUNTUAL_ALEATORIA',

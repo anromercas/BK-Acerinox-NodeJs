@@ -1,4 +1,4 @@
-const ChecklistInstance = require('../models/ChecklistInstance')
+const { ChecklistInstance, validateStatus } = require('../models/ChecklistInstance')
 const Checklist = require('../models/Checklist')
 const { subTypeEnum, statusEnum, lineTypeEnum } = require('../models/checklistInstanceEnums')
 
@@ -128,23 +128,35 @@ exports.updateChecklistInstanceStatus = async (req, res, next) => {
     const newStatus = req.params.newStatus;
     console.log("body :", JSON.stringify(req.body));
     const checklistinstance = await ChecklistInstance.findById(_id);
-    checklistinstance.status = newStatus;
-    console.log("new status ", newStatus);
-    console.log("updated checklist: ", JSON.stringify(checklistinstance));
-    await checklistinstance.save();
-    
-    //TODO: Move this validation to model
-    // if(!checklistinstance) {
-    //   return res.status(404).json({
-    //     success: false,
-    //     error: 'No checklist found'
-    //   });
-    // }
 
-    return res.status(200).json({
-      success: true,
-      data: checklistinstance
-    });
+    if(!checklistinstance) {
+      return res.status(404).json({
+        success: false,
+        error: 'No checklist found'
+      });
+    }
+    else {
+      //TODO: Move this validation logic to model
+      console.log("oldstatus: " + checklistinstance.status, 'newStatus: ' + newStatus);
+      if (validateStatus(checklistinstance.status, newStatus)) {
+        console.log("validated!");
+        checklistinstance.status = newStatus;
+        console.log("updated checklist: ", JSON.stringify(checklistinstance));
+        await checklistinstance.save();
+        console.log("checklistInstance.status saved: ", checklistinstance.status);
+        return res.status(200).json({
+          success: true,
+          data: checklistinstance
+        });
+      }
+      else {
+        console.log("new status not valid from current one")
+        return res.status(403).json({
+          success: false,
+          error: 'Change to this status is not allowed'
+        });
+      } 
+    }    
 
   } catch (err) {
     return res.status(500).json({
