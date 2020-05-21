@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   secondname: {
     type: String,
+    required: [true, 'secondname is required'] 
   },
   lastname: {
     type: String,
@@ -41,7 +42,7 @@ const userSchema = new mongoose.Schema({
 }, {timestamps: true});//, toJSON: { virtuals: true }});
 //userSchema.virtual('fullname').get(() => `${this.firstName} ${this.lastName}` );
 // excerpt from http://devsmash.com/blog/password-authentication-with-mongoose-and-bcrypt
-userSchema.pre('save', function(next) {
+/* userSchema.pre('save', function(next) {
   var user = this;
 
   // only hash the password if it has been modified (or is new)
@@ -67,6 +68,6 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
       if (err) return cb(err);
       cb(null, isMatch);
   });
-};
+}; */
 module.exports = mongoose.model('User', userSchema);
 
