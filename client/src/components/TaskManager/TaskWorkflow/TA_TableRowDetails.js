@@ -29,11 +29,11 @@ export const TA_TableRowDetails = ({row}) => {
   const [ comments, setComments ] = useState(row.comments.reduce((prev, current) => prev.concat(current + '\n'), ''));
 
 
-  async function updateTaskStatus(event, action){
+  async function updateTaskStatus(event, newStatus){
     event.preventDefault();
     row.comments = [comments];
     console.log('row.comments ' + row.comments);
-   const res = await updateChecklistInstanceStatus(row, action);
+   const res = await updateChecklistInstanceStatus(row, newStatus);
   }
   function exportToPdf(event){
     event.preventDefault();

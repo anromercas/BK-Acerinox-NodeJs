@@ -16,11 +16,11 @@ import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: 950,
   },
 });
 
-export const SuperTable = ({columns, rows}) => {
+export const SuperTable = ({columns, rows, title}) => {
   const today = Date.now();
   var aMonthAgo = new Date();
   aMonthAgo.setDate(aMonthAgo.getDate() - 30);
@@ -30,7 +30,7 @@ export const SuperTable = ({columns, rows}) => {
   return (
     <>
     <Typography variant="h6" align="center" color="textSecondary">
-      nota media por tipo de incidencia
+      {title}
     </Typography>
     
     <Grid container direction="row" justify="center" alignItems="center">
@@ -61,11 +61,11 @@ export const SuperTable = ({columns, rows}) => {
               <TableCell component="th" scope="row">
                 {row.Nombre}
               </TableCell>
-              <TableCell align="right">{row.categoría_1}</TableCell>
-              <TableCell align="right">{row.categoría_2}</TableCell>
-              <TableCell align="right">{row.categoría_3}</TableCell>
-              <TableCell align="right">{row.categoría_4}</TableCell>
-              <TableCell align="right">{row.categoría_5}</TableCell>
+              {row.categoría_1 && <TableCell align="right">{row.categoría_1}</TableCell>}
+              {row.categoría_2 && <TableCell align="right">{row.categoría_2}</TableCell>}
+              {row.categoría_3 && <TableCell align="right">{row.categoría_3}</TableCell>}
+              {row.categoría_4 && <TableCell align="right">{row.categoría_4}</TableCell>}
+              {row.categoría_5 && <TableCell align="right">{row.categoría_5}</TableCell>}
             </TableRow>
           ))}
         </TableBody>

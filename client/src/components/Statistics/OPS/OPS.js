@@ -51,7 +51,7 @@ export const OPS = ({height}) => {
        <IncidentsByCategory/>
      </Grid>
      <Grid item xs>
-       {data !== undefined ? <SuperTable columns={data.columns} rows={data.rows}/> : ""}
+       {data !== undefined ? <SuperTable columns={data.columns} rows={data.rows} title={"nota media por tipo de incidencia"}/> : ""}
      </Grid>
      <Grid item xs>
         <Fulfillment/>

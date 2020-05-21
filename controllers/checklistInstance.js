@@ -18,7 +18,7 @@ exports.getChecklistInstances = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error'
+      error: 'Server Error. Couldn´t get the checklist instances'
     });
   }
 }
@@ -84,7 +84,7 @@ exports.addChecklistInstance = async (req, res, next) => {
     } else {
       return res.status(500).json({
         success: false,
-        error: 'Server Error'
+        error: 'Server Error. Couldn´t add a new checklist instance'
       });
     }
   }
@@ -115,16 +115,16 @@ exports.deleteChecklistInstance = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error'
+      error: 'Server Error. Couldn´t delete checklist instance'
     });
   }
 }
-// @desc      Update checklist instance´s status
+// @desc      Update checklist instance´s status with comments [optional]
 // @route     PUT /api/v1/checklistInstances/:newStatus
 // @access    Public
 exports.updateChecklistInstanceStatus = async (req, res, next) => {
   try {
-    const { status, _id } = req.body;
+    const { status, _id, comments } = req.body;
     const newStatus = req.params.newStatus;
     console.log("body :", JSON.stringify(req.body));
     const checklistinstance = await ChecklistInstance.findById(_id);
@@ -141,6 +141,7 @@ exports.updateChecklistInstanceStatus = async (req, res, next) => {
       if (validateStatus(checklistinstance.status, newStatus)) {
         console.log("validated!");
         checklistinstance.status = newStatus;
+        checklist.comments = comments;
         console.log("updated checklist: ", JSON.stringify(checklistinstance));
         await checklistinstance.save();
         console.log("checklistInstance.status saved: ", checklistinstance.status);
@@ -161,7 +162,7 @@ exports.updateChecklistInstanceStatus = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error'
+      error: 'Server Error. Couldn´t update checklist'
     });
   }
 }

@@ -31,6 +31,8 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { TA_Latests } from './Latests/TA_Latests';
 import { TA_Table } from './TaskWorkflow/TA_Table';
 import green from '@material-ui/core/colors/green';
+import { TaError } from '../Alerts/TaError'
+import { TaNotice } from '../Alerts/TaNotice'
 //require('../utils/typeExtension');
 // import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 // import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
@@ -46,7 +48,7 @@ Date.prototype.addDays = function(days) {
   return date;
 }
 export const TaskAssigner = () => {
-  const { checklists, getChecklists, addChecklist, addChecklistInstance, auditors, getAuditors } = useContext(GlobalContext); 
+  const { checklists, getChecklists, addChecklist, addChecklistInstance, auditors, getAuditors, error, loading, setValidationError } = useContext(GlobalContext); 
   const [subType, setSubType] = useState('PUNTUAL');
   const [selectedDate, setSelectedDate] = useState(new Date('2020-03-26T21:11:54'));
   const [repetition, setRepetition] = useState(1);
@@ -84,7 +86,10 @@ export const TaskAssigner = () => {
       };
       console.log('before addChecklistInstance');
       addChecklistInstance(checklistInstance);
-    } else ; //TODO rise and alert showing what you need
+    } else {
+      const _validationError = "Seleccione auditor y tarea"
+      setValidationError(_validationError);
+    }
   };
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -96,8 +101,11 @@ export const TaskAssigner = () => {
     //console.log("RESULT length " + JSON.stringify(result[0]));
     return result;
   }
+  console.log(error)
   return (
-    
+    <>
+    <TaError />
+    <TaNotice />
     <Grid container spacing={3}>
       <Grid item xs={4} md={4} lg={4}>
         <Paper>
@@ -174,5 +182,6 @@ export const TaskAssigner = () => {
       <TA_Table />
     </Grid>
   </Grid>
+  </>
   )
 }

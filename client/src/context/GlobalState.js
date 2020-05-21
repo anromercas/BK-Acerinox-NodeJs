@@ -9,7 +9,8 @@ const initialState = {
   latests: [],
   auditors: [],
   error: null,
-  loading: true
+  loading: true,
+  validationError: null
 }
 
 // Create context
@@ -166,7 +167,18 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
-
+  function resetError(){
+    dispatch({
+      type: 'TA_ERROR',
+      payload: null
+    });
+  }
+  function setValidationError(error){
+    dispatch({
+      type: 'TA_VALIDATION_ERROR',
+      payload: error
+    });
+  }
   return (<GlobalContext.Provider value={{
     checklists: state.checklists,
     checklistInstances: state.checklistInstances,
@@ -174,6 +186,7 @@ export const GlobalProvider = ({ children }) => {
     latests: state.latests,
     error: state.error,
     loading: state.loading,
+    validationError: state.validationError,
     getAuditors,
     getChecklists,
     getChecklistInstances,
@@ -181,7 +194,10 @@ export const GlobalProvider = ({ children }) => {
     addChecklist,
     addChecklistInstance,
     deleteChecklistInstance,
-    updateChecklistInstanceStatus
+    updateChecklistInstanceStatus,
+    resetError, 
+    setValidationError
+    
   }}>
     {children}
   </GlobalContext.Provider>);

@@ -54,6 +54,11 @@ export default (state, action) => {
         ...state,
         error: action.payload
       }
+    case 'TA_VALIDATION_ERROR':
+      return {
+        ...state,
+        validationError: action.payload
+      }
     default:
       return state;
   }

@@ -1,5 +1,5 @@
 
-const ChecklistInstance = require('../models/ChecklistInstance');
+const { ChecklistInstance, validateStatus } = require('../models/ChecklistInstance')
 const Auditor = require('../models/User');
 
 ///ASSIGNER///
@@ -13,11 +13,10 @@ exports.getLatest = async (req, res, next) => {
     
     console.log("getLatest " + quantity);
     //const tasks = [{"_id": "5e891d5fc9f690e83aef6577", "name": "OPS Revisar Puertas Pabellón #1", "type": 'PUNTUAL', "auditor": "Manolo" , "dueDate": new Date(Date.now()).toLocaleString()}];
-    
+  
     const checklistInstances = await ChecklistInstance.find().sort({ createdAt: 'desc' }).limit(Number(quantity)).populate('user_id', 'fullname').populate('checklist_id', 'name');
     //console.log("instances: " + JSON.stringify(checklistInstances));
-    
-    console.log("find.sort.limit checklist instances " + checklistInstances.length);
+      console.log("find.sort.limit checklist instances " + checklistInstances.length);
     
     return res.status(200).json({
       success: true,
@@ -27,7 +26,7 @@ exports.getLatest = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error'
+      error: 'Server Error. Couldn´t get latests checklist instances' + err
     });
   }
 }
@@ -47,7 +46,7 @@ exports.getAuditors = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error'
+      error: 'Server Error. Couldn´t get auditors'
     });
   }
 }
@@ -339,7 +338,7 @@ exports.getChecklistsByCategory = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error'
+      error: 'Server Error. Couldn´t get checklist category data'
     });
   }
 }
@@ -916,7 +915,7 @@ exports.getChecklistsByPeriod = async  (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error'
+      error: 'Server Error. Couldn´t get checklists by period data'
     });
   }
 }
@@ -964,6 +963,19 @@ exports.getAggregationTable = async  (req, res, next) => {
           'categoría_5'
         ];
         break;
+      case 'incident':
+        rows = [
+          createData('Acería', 134),
+          createData('Distribución', 89),
+          createData('Office', 31),
+          createData('Comercial', 9),
+          createData('Corte', 121)
+        ];
+        columns = [
+          'Nombre',
+          'Número de Incidencias'
+        ];
+        break;
       default:
         break;
     }
@@ -994,7 +1006,7 @@ exports.getAggregationTable = async  (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error'
+      error: 'Server Error. Couldn´t get table´s data'
     });
   }
 }
