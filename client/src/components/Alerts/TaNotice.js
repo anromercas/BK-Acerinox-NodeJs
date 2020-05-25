@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import { GlobalContext } from '../../context/GlobalState';
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 
-export const TaNotice = () => {
+export default function TaNotice() {
   const { validationError, setValidationError } = useContext(GlobalContext);
   
   const handleClose = (event, reason) => {

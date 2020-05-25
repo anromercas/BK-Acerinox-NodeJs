@@ -31,9 +31,11 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { TA_Latests } from './Latests/TA_Latests';
 import { TA_Table } from './TaskWorkflow/TA_Table';
 import green from '@material-ui/core/colors/green';
-import { TaError } from '../Alerts/TaError'
-import { TaNotice } from '../Alerts/TaNotice'
-//require('../utils/typeExtension');
+import TaError from '../Alerts/TaError'
+import TaNotice from '../Alerts/TaNotice'
+import TaSuccess from '../Alerts/TaSuccess'
+require('../../utils/typeExtension');
+
 // import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 // import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
 
@@ -42,11 +44,7 @@ const theme = createMuiTheme({
     primary: green,
   },
 });
-Date.prototype.addDays = function(days) {
-  var date = new Date(this.valueOf());
-  date.setDate(date.getDate() + days);
-  return date;
-}
+
 export const TaskAssigner = () => {
   const { checklists, getChecklists, addChecklist, addChecklistInstance, auditors, getAuditors, error, loading, setValidationError } = useContext(GlobalContext); 
   const [subType, setSubType] = useState('PUNTUAL');
@@ -104,6 +102,7 @@ export const TaskAssigner = () => {
   console.log(error)
   return (
     <>
+    <TaSuccess />
     <TaError />
     <TaNotice />
     <Grid container spacing={3}>

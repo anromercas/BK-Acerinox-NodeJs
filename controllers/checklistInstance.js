@@ -1,7 +1,7 @@
 const { ChecklistInstance, validateStatus } = require('../models/ChecklistInstance')
 const Checklist = require('../models/Checklist')
 const { subTypeEnum, statusEnum, lineTypeEnum } = require('../models/checklistInstanceEnums')
-
+require ('../utils/typeExtension');
 // @desc    Get all checklist instances
 // @route   GET /api/v1/checklistInstances
 // @access  Public
@@ -126,6 +126,7 @@ exports.updateChecklistInstanceStatus = async (req, res, next) => {
   try {
     const { status, _id, comments } = req.body;
     const newStatus = req.params.newStatus;
+    const extension = req.params.extension;
     console.log("body :", JSON.stringify(req.body));
     const checklistinstance = await ChecklistInstance.findById(_id);
 
@@ -137,17 +138,24 @@ exports.updateChecklistInstanceStatus = async (req, res, next) => {
     }
     else {
       //TODO: Move this validation logic to model
-      console.log("oldstatus: " + checklistinstance.status, 'newStatus: ' + newStatus);
       if (validateStatus(checklistinstance.status, newStatus)) {
         console.log("validated!");
         checklistinstance.status = newStatus;
-        checklist.comments = comments;
+        checklistinstance.comments = comments;
+        if (newStatus === statusEnum.NOK && extension){
+          const extensionDays = 5;
+          checklistinstance.overdueDate = checklistinstance.overdueDate.addDays(extensionDays);
+        }
         console.log("updated checklist: ", JSON.stringify(checklistinstance));
         await checklistinstance.save();
-        console.log("checklistInstance.status saved: ", checklistinstance.status);
+        const chklistPopulated = await ChecklistInstance
+        .findById(checklistinstance._id)
+        .populate([{path: 'user_id', select: 'fullname -_id'}, 
+                    {path: 'checklist_id', select: 'name -_id department'}]); 
+        console.log("checklistInstance saved and populated: ", chklistPopulated);
         return res.status(200).json({
           success: true,
-          data: checklistinstance
+          data: chklistPopulated
         });
       }
       else {
@@ -162,7 +170,7 @@ exports.updateChecklistInstanceStatus = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error. Couldn´t update checklist'
+      error: 'Server Error. Couldn´t update checklist: ' + err
     });
   }
 }

@@ -13,6 +13,9 @@ import Typography from '@material-ui/core/Typography'
 import { ThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core/styles'
 import { green, red } from '@material-ui/core/colors'
 import Dialog from '@material-ui/core/Dialog'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
+import ChecklistPDF from '../../Documents/ChecklistPDF'
 
 const lineTypeEnum = Object.freeze({
   FREE_LINE: 'FREE_LINE',
@@ -27,21 +30,24 @@ const theme = createMuiTheme({
 export const TA_TableRowDetails = ({row}) => {
   const { updateChecklistInstanceStatus } = useContext(GlobalContext);
   const [ comments, setComments ] = useState(row.comments.reduce((prev, current) => prev.concat(current + '\n'), ''));
+  const [ extension, setExtension ] = useState(true);
+  const [ pdfLink, setPdfLink ] = useState(false);
 
-
-  async function updateTaskStatus(event, newStatus){
+  async function updateTaskStatus(event, newStatus, extension){
     event.preventDefault();
     row.comments = [comments];
     console.log('row.comments ' + row.comments);
-   const res = await updateChecklistInstanceStatus(row, newStatus);
+   const res = await updateChecklistInstanceStatus(row, newStatus, extension);
   }
-  function exportToPdf(event){
+  function generatePdf(event){
     event.preventDefault();
     console.log("To PDF document");
     //export document to PDF
+    setPdfLink(!pdfLink);
   }
   console.log('!Row: ', row);
   return (
+    <>
     <Grid container spacing={3}>
       {row.content !== undefined && row.content.map(checkpoint => {
         switch(checkpoint.type){
@@ -49,11 +55,9 @@ export const TA_TableRowDetails = ({row}) => {
             return (
               <Fixedlinexcontent checkpoint={checkpoint}/>
               )
-            break;
           case lineTypeEnum.FREE_LINE:
               return (
               <FreelinesContent checkpoint={checkpoint}/>)
-            break;
           default: 
             break;
         }
@@ -85,18 +89,22 @@ export const TA_TableRowDetails = ({row}) => {
               <Button variant='contained' color="secondary" onClick={(event) => updateTaskStatus(event, 'NOK')}>
                 NOK
               </Button>
+              <br/>
+              <FormControlLabel control={<Checkbox checked={extension} onChange={()=> setExtension(!extension)} name="extension" />} label="Conceder 5 dias más"/>
             </ThemeProvider>
             </Grid>
           <Grid item>
             {/* <Typography variant="body"> Export </Typography> */}
-            Export
-            <IconButton area-label="export" onClick={(event) => exportToPdf(event)}>
+            Exportar
+            <IconButton area-label="export" onClick={(event) => generatePdf(event)}>
               <PDFIcon/>
             </IconButton>
+            {pdfLink && <ChecklistPDF checklistInstance={row}/>}
           </Grid>
         </Grid>
       </Grid>
     </Grid>
+    </>
   )
 }
 const useStyles = makeStyles((theme) => ({

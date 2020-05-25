@@ -41,13 +41,13 @@ export default (state, action) => {
         checklistInstances: [action.payload, ...state.checklistInstances],
         latests: [action.payload, ...state.latests].splice(0, 10)
       }
-    case 'UPDATE_CHECKLIST_INSTANCE':
-      const checklistInstances = state.checklistInstances.filter(checklist => checklist._id !== action.payload);
-      const latests = state.latests.filter(checklist => checklist._id !== action.payload);
+    case 'UPDATE_CHECKLIST_INSTANCE': //you only can update status and comments for now
+      const checklistInstances = state.checklistInstances.filter(checklist => checklist._id !== action.payload._id);
+      const latests = state.latests.filter(checklist => checklist._id !== action.payload._id);
       return {
         ...state,
-        checklistInstances: [action.payload, ...checklistInstances],
-        latests: [action.payload, ...latests].splice(0, 10)
+        checklistInstances: [...checklistInstances, action.payload],
+        //latests: [action.payload, ...latests].splice(0, 10)
       }
     case 'TA_ERROR':
       return {
@@ -58,6 +58,11 @@ export default (state, action) => {
       return {
         ...state,
         validationError: action.payload
+      }
+    case 'TA_SUCCESS_MESSAGE':
+      return {
+        ...state,
+        successMessage: action.payload
       }
     default:
       return state;
