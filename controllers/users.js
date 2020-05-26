@@ -184,8 +184,3 @@ exports.userByToken = async (req, res, next) => {
   
 }
 
-exports.hola = (req, res ) => {
-  return res.json({
-    message: "hola"
-  })
-}

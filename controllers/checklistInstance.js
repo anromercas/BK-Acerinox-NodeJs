@@ -27,7 +27,6 @@ exports.getChecklistInstances = async (req, res, next) => {
 // @route   POST /api/v1/checklistInstances
 // @access  Public
 exports.addChecklistInstance = async (req, res, next) => {
-  // console.log(req.body);
   try {
     
     const { 
@@ -43,7 +42,6 @@ exports.addChecklistInstance = async (req, res, next) => {
     const _checklist = await Checklist.findById(checklist._id, 'checkpoints');
     switch (subType){
       case subTypeEnum.PUNTUAL:
-        console.log(_checklist);
         const content = _checklist.checkpoints.map(checkpoint => {
           const contentEntry = {     
             name: checkpoint.name,
@@ -76,7 +74,6 @@ exports.addChecklistInstance = async (req, res, next) => {
     }
     
   } catch (err) {
-    console.error(err);
     if(err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
 
@@ -176,4 +173,38 @@ exports.updateChecklistInstanceStatus = async (req, res, next) => {
       error: 'Server Error. Couldn´t update checklist: ' + err
     });
   }
+}
+
+exports.getChecklistInstancesByUser = async (req, res, next) => {
+
+  try {
+
+    const user = req.user;
+
+    const checklistInstances = await ChecklistInstance.find({ user_id: user._id })
+                                .populate('user_id')
+                                .populate('checklist_id')
+
+    return res.status(201).json({
+      success: true,
+      data: checklistInstances
+    }); 
+
+  } catch(err) {
+    console.log(err);
+      if(err.name === 'ValidationError') {
+        const messages = Object.values(err.errors).map(val => val.message);
+  
+        return res.status(400).json({
+          success: false,
+          error: messages
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+          error: 'Server Error'
+        });
+      }
+  }
+
 }

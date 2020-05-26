@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getUsers, getUser, addUser, deleteUser, updateUser, userByToken, hola } = require('../controllers/users');
+const { getUsers, getUser, addUser, deleteUser, updateUser, userByToken } = require('../controllers/users');
 
 const { verifyToken } = require('../middlewares/auth');
 
@@ -15,10 +15,6 @@ router
   .get(getUser)
   .put(updateUser)
   .delete(deleteUser);
-
-router
-  .route('/hola')
-  .get(hola);
   
 router
   .route('/user/userByToken')
