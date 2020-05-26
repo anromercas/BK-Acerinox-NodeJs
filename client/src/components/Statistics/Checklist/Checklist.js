@@ -34,7 +34,7 @@ export const Checklist = ({height}) => {
         <IncidentsByCategory/>
       </Grid>
       <Grid item xs>
-        {data !== undefined ? <SuperTable columns={data.columns} rows={data.rows}/> : ""}
+        {data !== undefined ? <SuperTable columns={data.columns} rows={data.rows} title={"nota media por tipo de incidencia"}/> : ""}
       </Grid>
      </Grid>
     // <Box height={height} width="100%">

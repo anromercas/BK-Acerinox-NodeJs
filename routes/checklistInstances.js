@@ -12,7 +12,7 @@ router
   .delete(deleteChecklistInstance)
 
 router
-  .route('/:newStatus')
+  .route('/:newStatus/:extension')
   .put(updateChecklistInstanceStatus);
 
 module.exports = router;

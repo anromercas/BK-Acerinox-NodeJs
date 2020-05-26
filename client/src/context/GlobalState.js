@@ -9,7 +9,9 @@ const initialState = {
   latests: [],
   auditors: [],
   error: null,
-  loading: true
+  loading: true,
+  validationError: null,
+  successMessage: null
 }
 
 // Create context
@@ -144,7 +146,7 @@ export const GlobalProvider = ({ children }) => {
     }
   }
   
-  async function updateChecklistInstanceStatus(checklistInstance, newStatus) {
+  async function updateChecklistInstanceStatus(checklistInstance, newStatus, extension) {
     const config = {
       headers: {
         'Content-Type': 'application/json'
@@ -152,7 +154,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     try {
-      const res = await axios.put(`/api/v1/checklistInstances/${newStatus}`, checklistInstance, config);
+      const res = await axios.put(`/api/v1/checklistInstances/${newStatus}/${extension}`, checklistInstance, config);
       console.log("globalstate update checklistInstance: ", JSON.stringify(checklistInstance));
       console.log("globalstate newStatus: ", newStatus);
       dispatch({
@@ -166,7 +168,24 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
-
+  function resetError(){
+    dispatch({
+      type: 'TA_ERROR',
+      payload: null
+    });
+  }
+  function setValidationError(error){
+    dispatch({
+      type: 'TA_VALIDATION_ERROR',
+      payload: error
+    });
+  }
+  function setSuccessMessage(message){
+    dispatch({
+      type: 'TA_SUCCESS_MESSAGE',
+      payload: message
+    });
+  }
   return (<GlobalContext.Provider value={{
     checklists: state.checklists,
     checklistInstances: state.checklistInstances,
@@ -174,6 +193,8 @@ export const GlobalProvider = ({ children }) => {
     latests: state.latests,
     error: state.error,
     loading: state.loading,
+    validationError: state.validationError,
+    successMessage: state.successMessage,
     getAuditors,
     getChecklists,
     getChecklistInstances,
@@ -181,7 +202,11 @@ export const GlobalProvider = ({ children }) => {
     addChecklist,
     addChecklistInstance,
     deleteChecklistInstance,
-    updateChecklistInstanceStatus
+    updateChecklistInstanceStatus,
+    resetError, 
+    setValidationError,
+    setSuccessMessage
+    
   }}>
     {children}
   </GlobalContext.Provider>);
