@@ -54,3 +54,18 @@ exports.loginMobile = async (req, res, next) => {
       }
     }
   }
+
+
+// @desc    renew login
+// @route   GET /api/v1/login
+// @access  Public
+exports.renewToken = async (req, res, next) => {
+
+  var token = jwt.sign({ user: req.user }, process.env.SEED, { expiresIn: process.env.TOKEN_EXPIRES });
+
+  return res.status(201).json({
+    success: true,
+    data: {token}
+  });
+
+}

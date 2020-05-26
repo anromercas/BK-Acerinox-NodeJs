@@ -27,6 +27,7 @@ exports.getChecklistInstances = async (req, res, next) => {
 // @route   POST /api/v1/checklistInstances
 // @access  Public
 exports.addChecklistInstance = async (req, res, next) => {
+  // console.log(req.body);
   try {
     
     const { 
@@ -42,6 +43,7 @@ exports.addChecklistInstance = async (req, res, next) => {
     const _checklist = await Checklist.findById(checklist._id, 'checkpoints');
     switch (subType){
       case subTypeEnum.PUNTUAL:
+        console.log(_checklist);
         const content = _checklist.checkpoints.map(checkpoint => {
           const contentEntry = {     
             name: checkpoint.name,
@@ -74,6 +76,7 @@ exports.addChecklistInstance = async (req, res, next) => {
     }
     
   } catch (err) {
+    console.error(err);
     if(err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
 

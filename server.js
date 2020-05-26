@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
+const cors = require('cors');
 
 dotenv.config({ path: './config/config.env' });
 
@@ -22,6 +23,9 @@ app.use(express.json());
 if(process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// CORS
+app.use(cors());
 
 app.use('/api/v1/checklists', checklists);
 app.use('/api/v1/checklistInstances', checklistInstances);

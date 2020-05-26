@@ -3,16 +3,10 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './config/config.env' });
 
 // ==================
-// Verificar Token
+// Verify Token
 // ==================
 
 let verifyToken = (req, res, next) => {
-
-    /* let token = req.get('token');
-
-    res.json({
-        token
-    }) */
 
     let token = req.query.token ? req.query.token : req.get('token');
 
@@ -32,14 +26,14 @@ let verifyToken = (req, res, next) => {
 };
 
 // ==================
-// Verifica ADMINISTRATOR
+// Verify ADMINISTRATOR
 // ==================
 
 let verifyAdmin_Role = (req, res, next) => {
 
-    let usuario = req.user;
+    let user = req.user;
 
-    if (usuario.role === 'ADMINISTRATOR' ) {
+    if (user.role === 'ADMINISTRATOR' ) {
         next();
     } else {
         return res.json({
