@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { statusEnum, statusEnumDefault, subTypeEnum, subTypeEnumDefault, lineTypeEnum, lineTypeEnumDefault} = require('./checklistInstanceEnums');
+const { statusEnum, statusEnumDefault, subTypeEnum, subTypeEnumDefault, lineTypeEnum, lineTypeEnumDefault} = require('./enums/checklistInstanceEnums');
 
 const checklistInstanceSchema = new mongoose.Schema({
   user_id: {
@@ -69,14 +69,14 @@ exports.validateStatus = (currentStatus, newStatus) => {
   let result = false;
   //TODO: Improve this! ****ing javascript
   const ASIGNADA = statusEnum.ASIGNADA;
-  const EN_REVISION = statusEnum.EN_REVISION;
+  const A_REVISAR = statusEnum.A_REVISAR;
   const OK = statusEnum.OK;
   const NOK = statusEnum.NOK;
 
   const validNextStatus = {
-    'ASIGNADA': [EN_REVISION],
-    'EN_REVISION': [OK, NOK],
-    'NOK': [EN_REVISION],
+    'ASIGNADA': [A_REVISAR],
+    'A_REVISAR': [OK, NOK],
+    'NOK': [A_REVISAR],
     'OK': []
   };
   return validNextStatus[currentStatus].includes(newStatus);

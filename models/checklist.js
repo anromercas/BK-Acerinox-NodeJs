@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const { typeEnum, typeEnumDefault } = require('./enums/checklistEnums');
 
 const ChecklistSchema = new mongoose.Schema({
   type: {
     type: String,
-    enum: ['CHECKLIST', 'OPS'],
-    default: 'CHECKLIST'
+    enum: Object.keys(typeEnum),
+    default: typeEnumDefault
   },
   name: {
     type: String,

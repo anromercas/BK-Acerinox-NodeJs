@@ -9,7 +9,7 @@ router
 
 router
   .route('/:id')
-  .delete(deleteChecklistInstance)
+  .delete(deleteChecklistInstance);
 
 router
   .route('/:newStatus/:extension')
