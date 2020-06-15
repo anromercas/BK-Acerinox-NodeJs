@@ -52,6 +52,41 @@ exports.addChecklist = async (req, res, next) => {
   }
 }
 
+// @desc    update checklist
+// @route   PUT /api/v1/checklists
+// @access  Public
+exports.updateChecklist = async (req, res, next) => {
+  try {
+
+    const options = {
+      new: true,
+      runValidators: true,
+      context: 'query'
+    };
+
+    const checklist = await Checklist.findByIdAndUpdate(req.params.id, req.body, options);
+  
+    return res.status(201).json({
+      success: true,
+      data: checklist
+    }); 
+  } catch (err) {
+    if(err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+
+      return res.status(400).json({
+        success: false,
+        error: messages
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: 'Server Error'
+      });
+    }
+  }
+}
+
 // @desc    Delete checklist (it does not delete in cascade)
 // @route   DELETE /api/v1/checklists/:id
 // @access  Public

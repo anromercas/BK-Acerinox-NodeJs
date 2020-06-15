@@ -4,7 +4,7 @@ const incidentSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: [true, 'A user for this checklist´s instance is required']
+    required: [true, 'A user for this incident is required']
   },
   date: Date,
   department: String,

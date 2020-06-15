@@ -3,10 +3,12 @@ const router = express.Router();
 const { verifyToken } = require('../middlewares/auth');
 
 const { 
-  getChecklistInstances, 
+  getChecklistInstances,
+  getChecklistInstanceById,
   addChecklistInstance, 
   deleteChecklistInstance, 
   updateChecklistInstanceStatus, 
+  updateChecklistInstance,
   getChecklistInstancesByUser } = require('../controllers/checklistInstance');
 
 router
@@ -16,14 +18,16 @@ router
 
 router
   .route('/:id')
+  .get(getChecklistInstanceById)
   .delete(deleteChecklistInstance)
+  .put(updateChecklistInstance)
 
 router
   .route('/:newStatus/:extension')
   .put(updateChecklistInstanceStatus)
 
 router
-  .route('/checklistInstancesByUser')
+  .route('/instance/byuser')
   .get(verifyToken, getChecklistInstancesByUser)
 
 module.exports = router;

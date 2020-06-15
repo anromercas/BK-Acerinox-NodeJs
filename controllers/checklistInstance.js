@@ -2,6 +2,8 @@ const { ChecklistInstance, validateStatus } = require('../models/ChecklistInstan
 const Checklist = require('../models/Checklist')
 const { subTypeEnum, statusEnum, lineTypeEnum } = require('../models/checklistInstanceEnums')
 require ('../utils/typeExtension');
+const { deleteFile } = require('./upload');
+
 // @desc    Get all checklist instances
 // @route   GET /api/v1/checklistInstances
 // @access  Public
@@ -21,6 +23,67 @@ exports.getChecklistInstances = async (req, res, next) => {
       error: 'Server Error. Couldn´t get the checklist instances'
     });
   }
+}
+
+
+// @desc    Get checklist instance by id
+// @route   GET /api/v1/checklistInstances
+// @access  Public
+exports.getChecklistInstanceById = async (req, res, next) => {
+
+  try {
+    const chkInstance = await ChecklistInstance.findById(req.params.id)
+                        .populate('checklist_id')
+                        .populate('user_id');
+
+  return res.status(200).json({
+    success: true,
+    data: chkInstance
+  });
+} catch (err) {
+  return res.status(500).json({
+    success: false,
+    error: 'Server Error'
+  });
+}
+
+}
+
+// @desc    Get checklist instance by token
+// @route   GET /api/v1/checklistInstances
+// @access  Public
+exports.getChecklistInstancesByUser = async (req, res, next) => {
+
+  try {
+
+    const user = req.user;
+
+    const checklistInstances = await ChecklistInstance.find({ user_id: user._id })
+                                .populate('user_id')
+                                .populate('checklist_id')
+
+    return res.status(201).json({
+      success: true,
+      data: checklistInstances
+    }); 
+
+  } catch(err) {
+    console.log(err);
+      if(err.name === 'ValidationError') {
+        const messages = Object.values(err.errors).map(val => val.message);
+  
+        return res.status(400).json({
+          success: false,
+          error: messages
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+          error: 'Server Error'
+        });
+      }
+  }
+
 }
 
 // @desc    Add checklist instance
@@ -90,6 +153,43 @@ exports.addChecklistInstance = async (req, res, next) => {
   }
 }
 
+// @desc    Update checklist instance
+// @route   PUT /api/v1/checklistInstances/:id
+// @access  Public
+exports.updateChecklistInstance = async (req, res, next) => {
+
+  try {
+    console.log(req.body);
+    const options = {
+      new: true,
+      runValidators: true,
+      context: 'query'
+    };
+    const chkInstance = await ChecklistInstance.findByIdAndUpdate(req.params.id, req.body, options);
+  
+    return res.status(201).json({
+      success: true,
+      data: chkInstance
+    }); 
+  } catch (err) {
+      console.log(err);
+    if(err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+
+      return res.status(400).json({
+        success: false,
+        error: messages
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: 'Server Error'
+      });
+    }
+  }
+
+}
+
 // @desc    Delete checklist instance
 // @route   DELETE /api/v1/checklistInstances/:id
 // @access  Public
@@ -97,15 +197,21 @@ exports.deleteChecklistInstance = async (req, res, next) => {
   try {
     const checklistinstance = await ChecklistInstance.findById(req.params.id);
 
-    // if(!checklistinstance) {
-    //   return res.status(404).json({
-    //     success: false,
-    //     error: 'No checklist found'
-    //   });
-    // }
-
-    if (checklistinstance) 
+    if (checklistinstance) {
+      // mando a borrar las imgs
+      if(checklistinstance.content.length > 0) {
+        checklistinstance.content.forEach( content => {
+          content.freeValues.forEach( value => {
+                value.images.forEach( img => {
+                  deleteFile(img, 'checklistInstance-content');
+                });
+            });
+        });
+      }      
+      
       await checklistinstance.remove();
+
+    }
 
     return res.status(200).json({
       success: true,
@@ -175,36 +281,3 @@ exports.updateChecklistInstanceStatus = async (req, res, next) => {
   }
 }
 
-exports.getChecklistInstancesByUser = async (req, res, next) => {
-
-  try {
-
-    const user = req.user;
-
-    const checklistInstances = await ChecklistInstance.find({ user_id: user._id })
-                                .populate('user_id')
-                                .populate('checklist_id')
-
-    return res.status(201).json({
-      success: true,
-      data: checklistInstances
-    }); 
-
-  } catch(err) {
-    console.log(err);
-      if(err.name === 'ValidationError') {
-        const messages = Object.values(err.errors).map(val => val.message);
-  
-        return res.status(400).json({
-          success: false,
-          error: messages
-        });
-      } else {
-        return res.status(500).json({
-          success: false,
-          error: 'Server Error'
-        });
-      }
-  }
-
-}
