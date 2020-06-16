@@ -9,10 +9,8 @@ const incidentSchema = new mongoose.Schema({
   date: Date,
   department: String,
   location: String,
-  category: {
-    type: String,
-    enum: []//categorías
-  },
+  insecureActs: String,
+  insecureConditions: String,
   signingDate: Date,
   signingInfo: String,
   content: [{
