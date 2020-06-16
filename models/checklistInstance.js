@@ -32,26 +32,31 @@ const checklistInstanceSchema = new mongoose.Schema({
   },
   signingDate: Date,
   signingInfo: String,
-  content: [{
-    name: String,
-    score: {
-      type: Number,
-      enum: [0, 1, 2, 3, 4, 5]
-    },
-    type: {
-      type: String,
-      enum: Object.keys(lineTypeEnum),
-      default: lineTypeEnum.FREE_LINE
-    },
-    freeValues: [{
-      images: [String],
-      text: String
-    }],
-    fixedValues: [{
-      _type: String, //this refers to the type of the value (i.e: {type: boolean, value: "3"})
-      _value: String
-    }]
-  }],
+  content: [
+    {
+      section: String,
+      checked: {
+        type: Boolean,
+        default: false
+      },
+      checkpoints: [{
+        name: String,
+        score: {
+          type: Number,
+          enum: [0, 1, 2, 3, 4, 5]
+        },
+        type: {
+          type: String,
+          enum: Object.keys(lineTypeEnum),
+          default: lineTypeEnum.FREE_LINE
+        },
+        observations: [{
+          images: [String],
+          text: String
+        }]
+      }]
+    }
+  ],
   comments: [String]
 },{
     timestamps: true,
