@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const { typeEnum, typeEnumDefault, lineTypeEnum, lineTypeEnumDefault} = require('./enums/checklistEnums');
 
 const ChecklistSchema = new mongoose.Schema({
   type: {
     type: String,
-    enum: ['CHECKLIST', 'OPS'],
-    default: 'CHECKLIST'
+    enum: Object.keys(typeEnum),
+    default: typeEnumDefault
   },
   name: {
     type: String,
@@ -21,15 +22,19 @@ const ChecklistSchema = new mongoose.Schema({
   },
   thumbnail: String,
   maxOverdueDays: Number,
-  checkpoints: [{
-    name: String,
-    type: {
-      type: String,
-      enum: ['FREE_LINE', 'FIXED_LINE'],
-      default: 'FREE_LINE'
-    },
-    fixedTypes: [String] //this refers to the type of the values (i.e: [boolean, Date, String...])  
-  }]
+  content: [
+    {
+      section: String,
+      checkpoints: [{
+        name: String,
+        type: {
+          type: String,
+          enum: Object.keys(lineTypeEnum),
+          default: lineTypeEnumDefault
+        }  
+      }]
+    }
+  ]
 }, {timestamps: true});
 
 module.exports = mongoose.model('Checklist', ChecklistSchema);

@@ -16,11 +16,8 @@ import Dialog from '@material-ui/core/Dialog'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import ChecklistPDF from '../../Documents/ChecklistPDF'
+import { lineTypeEnum } from '../../../model/enums'
 
-const lineTypeEnum = Object.freeze({
-  FREE_LINE: 'FREE_LINE',
-  FIXED_LINE: 'FIXED_LINE'
-});//TO REFACTOR
 const theme = createMuiTheme({
   palette: {
     primary: green,
@@ -47,7 +44,6 @@ export const TA_TableRowDetails = ({row}) => {
   }
   console.log('!Row: ', row);
   return (
-    <>
     <Grid container spacing={3}>
       {row.content !== undefined && row.content.map(checkpoint => {
         switch(checkpoint.type){
@@ -104,7 +100,6 @@ export const TA_TableRowDetails = ({row}) => {
         </Grid>
       </Grid>
     </Grid>
-    </>
   )
 }
 const useStyles = makeStyles((theme) => ({
@@ -143,7 +138,9 @@ const FreelinesContent = ({checkpoint}) => {
         <Paper variant='outlined'>
           {checkpoint.name}
         </Paper>
-        Score: {checkpoint.score}
+        <Typography variant="overline" display="block" align="right" gutterBottom >
+          Puntuación: {checkpoint.score}
+        </Typography>
         <div className={classes.root}>
           {checkpoint.freeValues.map((freeValue) => {
                return (
@@ -179,7 +176,9 @@ const Fixedlinexcontent = ({checkpoint}) => {
         <Paper variant='outlined'>
           {checkpoint.name} {checkpoint.fixedValues[0]._value}
         </Paper>
-        Score: {checkpoint.score}
+        <Typography variant="overline" display="block" align="right" gutterBottom >
+          Puntuación: {checkpoint.score}
+        </Typography>
       </Grid>
   )
 }

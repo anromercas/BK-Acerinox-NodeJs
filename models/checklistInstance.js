@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { statusEnum, statusEnumDefault, subTypeEnum, subTypeEnumDefault, lineTypeEnum, lineTypeEnumDefault} = require('./checklistInstanceEnums');
+const { statusEnum, statusEnumDefault, subTypeEnum, subTypeEnumDefault, lineTypeEnum, lineTypeEnumDefault} = require('./enums/checklistInstanceEnums');
 
 const checklistInstanceSchema = new mongoose.Schema({
   user_id: {
@@ -32,26 +32,31 @@ const checklistInstanceSchema = new mongoose.Schema({
   },
   signingDate: Date,
   signingInfo: String,
-  content: [{
-    name: String,
-    score: {
-      type: Number,
-      enum: [0, 1, 2, 3, 4, 5]
-    },
-    type: {
-      type: String,
-      enum: Object.keys(lineTypeEnum),
-      default: lineTypeEnum.FREE_LINE
-    },
-    freeValues: [{
-      images: [String],
-      text: String
-    }],
-    fixedValues: [{
-      _type: String, //this refers to the type of the value (i.e: {type: boolean, value: "3"})
-      _value: String
-    }]
-  }],
+  content: [
+    {
+      section: String,
+      checkpoints: [{
+        checked: {
+          type: Boolean,
+          default: false
+        },
+        name: String,
+        score: {
+          type: Number,
+          enum: [0, 1, 2, 3, 4, 5]
+        },
+        type: {
+          type: String,
+          enum: Object.keys(lineTypeEnum),
+          default: lineTypeEnum.FREE_LINE
+        },
+        observations: [{
+          images: [String],
+          text: String
+        }]
+      }]
+    }
+  ],
   comments: [String]
 },{
     timestamps: true,
@@ -69,14 +74,14 @@ exports.validateStatus = (currentStatus, newStatus) => {
   let result = false;
   //TODO: Improve this! ****ing javascript
   const ASIGNADA = statusEnum.ASIGNADA;
-  const EN_REVISION = statusEnum.EN_REVISION;
+  const A_REVISAR = statusEnum.A_REVISAR;
   const OK = statusEnum.OK;
   const NOK = statusEnum.NOK;
 
   const validNextStatus = {
-    'ASIGNADA': [EN_REVISION],
-    'EN_REVISION': [OK, NOK],
-    'NOK': [EN_REVISION],
+    'ASIGNADA': [A_REVISAR],
+    'A_REVISAR': [OK, NOK],
+    'NOK': [A_REVISAR],
     'OK': []
   };
   return validNextStatus[currentStatus].includes(newStatus);

@@ -54,7 +54,7 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-  async function getChecklistInstances() {
+  async function getChecklistInstances(type, user) {
     try {
       const res = await axios.get('/api/v1/checklistInstances');
 

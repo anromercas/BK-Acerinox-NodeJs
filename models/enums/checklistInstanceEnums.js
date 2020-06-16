@@ -1,6 +1,6 @@
 exports.statusEnum = Object.freeze({
   ASIGNADA: 'ASIGNADA', 
-  EN_REVISION: 'EN_REVISION',
+  A_REVISAR: 'A_REVISAR',
   OK: 'OK',
   NOK: 'NOK'
 });
