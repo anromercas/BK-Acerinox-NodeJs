@@ -35,11 +35,11 @@ const checklistInstanceSchema = new mongoose.Schema({
   content: [
     {
       section: String,
-      checked: {
-        type: Boolean,
-        default: false
-      },
       checkpoints: [{
+        checked: {
+          type: Boolean,
+          default: false
+        },
         name: String,
         score: {
           type: Number,
