@@ -293,7 +293,7 @@ export const IncidentsByCategory = () => {
   return (
     <>
     <Typography variant="h6" align="center" color="textSecondary">
-      top 5 problemas
+      top 5 categorías problemáticas
     </Typography>
     <Box height={500} width="100%">
       <Box height="90%" mx={0.5} width="100%" display="inline-block">

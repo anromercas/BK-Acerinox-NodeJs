@@ -18,9 +18,13 @@ router
 
 router
   .route('/:id')
+<<<<<<< HEAD
   .get(getChecklistInstanceById)
   .delete(deleteChecklistInstance)
   .put(updateChecklistInstance)
+=======
+  .delete(deleteChecklistInstance);
+>>>>>>> simplifyModel
 
 router
   .route('/:newStatus/:extension')

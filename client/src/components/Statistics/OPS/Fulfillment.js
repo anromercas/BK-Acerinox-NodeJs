@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 // you'll often use just a few of them.
 const data = [
   {
-    "country": "Enero",
+    "month": "Enero",
     "Acería": 48,
     "AceríaColor": "hsl(299, 70%, 50%)",
     "Office": 75,
@@ -24,7 +24,7 @@ const data = [
     "TransporteColor": "hsl(204, 70%, 50%)"
   },
   {
-    "country": "Febrero",
+    "month": "Febrero",
     "Acería": 88,
     "AceríaColor": "hsl(66, 70%, 50%)",
     "Office": 46,
@@ -39,7 +39,7 @@ const data = [
     "TransporteColor": "hsl(347, 70%, 50%)"
   },
   {
-    "country": "Marzo",
+    "month": "Marzo",
     "Acería": 20,
     "AceríaColor": "hsl(275, 70%, 50%)",
     "Office": 99,
@@ -54,7 +54,7 @@ const data = [
     "TransporteColor": "hsl(343, 70%, 50%)"
   },
   {
-    "country": "Abril",
+    "month": "Abril",
     "Acería": 33,
     "AceríaColor": "hsl(326, 70%, 50%)",
     "Office": 71,
@@ -69,7 +69,7 @@ const data = [
     "TransporteColor": "hsl(293, 70%, 50%)"
   },
   {
-    "country": "Mayo",
+    "month": "Mayo",
     "Acería": 62,
     "AceríaColor": "hsl(287, 70%, 50%)",
     "Office": 91,
@@ -84,7 +84,7 @@ const data = [
     "TransporteColor": "hsl(105, 70%, 50%)"
   },
   {
-    "country": "Junio",
+    "month": "Junio",
     "Acería": 33,
     "AceríaColor": "hsl(244, 70%, 50%)",
     "Office": 63,
@@ -99,7 +99,7 @@ const data = [
     "TransporteColor": "hsl(289, 70%, 50%)"
   },
   {
-    "country": "Julio",
+    "month": "Julio",
     "Acería": 83,
     "AceríaColor": "hsl(207, 70%, 50%)",
     "Office": 89,
@@ -114,6 +114,7 @@ const data = [
     "TransporteColor": "hsl(262, 70%, 50%)"
   }
 ]
+const dataKeys = [ 'Acería', 'Office', 'Corte', 'Distribución', 'Limpieza', 'Transporte' ]
 export const Fulfillment = () => (
   <>
   <br/>
@@ -125,10 +126,12 @@ export const Fulfillment = () => (
     <Box height="90%" mx={0.5} width="100%" display="inline-block">
       <ResponsiveBar
           data={data}
-          keys={[ 'Acería', 'Office', 'Corte', 'Distribución', 'Limpieza', 'Transporte' ]}
-          indexBy="country"
+          keys={dataKeys}
+          indexBy="month"
           margin={{ top: 25, right: 130, bottom: 50, left: 60 }}
           padding={0.3}
+          layout='horizontal'
+          maxValue={dataKeys.length*100}
           colors={{ scheme: 'nivo' }}
           defs={[
               {
