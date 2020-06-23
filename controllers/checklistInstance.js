@@ -102,21 +102,27 @@ exports.addChecklistInstance = async (req, res, next) => {
       overdueDate,
       repetition,
     } = req.body;
-    const instanceValues = { subType, user_id: auditor._id, checklist_id: checklist._id, startDate, dueDate, overdueDate, repetition };
-    const _checklist = await Checklist.findById(checklist._id, 'checkpoints');
+    const instanceValues = { subType, user_id: auditor._id, checklist_id: checklist._id, startDate, dueDate, overdueDate, shift: '--', comments: []};
+    const _checklist = await Checklist.findById(checklist._id, 'content');
     switch (subType){
       case subTypeEnum.PUNTUAL:
-        const content = _checklist.checkpoints.map(checkpoint => {
-          const contentEntry = {     
-            name: checkpoint.name,
-            type: checkpoint.type
-          };
-          if (checkpoint.type === lineTypeEnum.FIXED_LINE)
-            contentEntry['fixedValues'] = checkpoint.fixedTypes.map(type => {return {type: type,  value: undefined}});//TODO: check whether setting a default value for value of type "type" is of any help
-          else if (checkpoint.type === lineTypeEnum.FREE_LINE)
-            contentEntry['freeValues'] = [{text: "", images: []}];
+
+        const content = _checklist.content.map(section => {
+          const contentEntry = {
+            section: section.section,
+            checkpoints: section.checkpoints.map(checkpoint => {
+              const checkpointEntry = {
+                checked: false,
+                name: checkpoint.name,
+                score: 0,
+                type: checkpoint.type,
+                observations: []
+              }
+              return checkpointEntry
+            })
+          }
           return contentEntry;
-        });
+        })
         const aNewChklInst = {...instanceValues, content};
         const newChecklistInstance = await ChecklistInstance.create(aNewChklInst);
         const filledNewChkInstance = await ChecklistInstance.findById(newChecklistInstance._id).populate([{path: 'checklist_id', select: 'name department'}, {path: 'user_id', select: 'fullname'}]);
