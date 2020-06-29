@@ -105,7 +105,8 @@ export const GlobalProvider = ({ children }) => {
   async function addChecklist(checklist) {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'token': '' 
       }
     }
 

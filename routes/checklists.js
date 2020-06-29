@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getChecklists, addChecklist, deleteChecklist } = require('../controllers/checklists');
+const { getChecklists, addChecklist, deleteChecklist, updateChecklist } = require('../controllers/checklists');
 
 router
   .route('/')
@@ -9,6 +9,7 @@ router
 
 router
   .route('/:id')
-  .delete(deleteChecklist);
+  .delete(deleteChecklist)
+  .put(updateChecklist)
 
 module.exports = router;
