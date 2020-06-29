@@ -29,6 +29,6 @@ router
 
 router
   .route('/instance/byuser')
-  .get(verifyToken, getChecklistInstancesByUser)
+  .get(getChecklistInstancesByUser)
 
 module.exports = router;

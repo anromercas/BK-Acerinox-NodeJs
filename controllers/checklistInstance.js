@@ -144,6 +144,7 @@ exports.addChecklistInstance = async (req, res, next) => {
     }
     
   } catch (err) {
+    console.log(err);
     if(err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
 
@@ -226,6 +227,7 @@ exports.deleteChecklistInstance = async (req, res, next) => {
     });
 
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       error: 'Server Error. Couldn´t delete checklist instance'

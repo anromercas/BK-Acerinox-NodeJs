@@ -32,6 +32,8 @@ if(process.env.NODE_ENV === 'development') {
 
 // CORS
 app.use(cors());
+app.use(fileUpload({ useTempFiles: true }));
+
 
 app.use('/api/v1/login', login);
 app.use('/api/v1/image', image);
@@ -42,7 +44,6 @@ app.use('/api/v1/upload', upload);
 app.use(verifyToken);
 
 
-app.use(fileUpload({ useTempFiles: true }));
 
 app.use('/api/v1/checklists', checklists);
 app.use('/api/v1/checklistInstances', checklistInstances);

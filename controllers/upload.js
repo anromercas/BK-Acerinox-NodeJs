@@ -19,8 +19,10 @@ exports.uploadImg = async (req, res, next) => {
 
     let type = req.params.type;
     let id = req.params.id;
-    let contentName = req.params.contentName || "";
-    let indexFreeValue = req.params.indexFreeValue || "";
+    let contentSection = req.query.contentSection || "";
+    let checkpointName = req.query.checkpointName || "";
+    let indexObservation = req.query.indexObservation || 0;
+    indexObservation = Number(indexObservation);
 
     try {
 
@@ -87,10 +89,10 @@ exports.uploadImg = async (req, res, next) => {
                 checklistThumbnail(id, res, imgName);
                 break;
             case 'checklistInstance-content':
-                checklistInstanceContent(id, res, imgName, contentName, indexFreeValue);
+                checklistInstanceContent(id, res, imgName, contentSection, checkpointName, indexObservation);
                 break;
             case 'incident':
-                incident(id, res, imgName, contentName, indexFreeValue);
+                incident(id, res, imgName);
                 break;
         }
 
@@ -147,9 +149,10 @@ function checklistThumbnail(id, res, imgName) {
     });
 }
 
-function checklistInstanceContent(id, res, imgName, contentName, indexFreeValue) {
+function checklistInstanceContent(id, res, imgName, contentSection, checkpointName, indexObservation) {
     ChecklistInstance.findById(id, (err, checklist) => {
         if(err) {
+            console.log(err);
             deleteFile(imgName, 'checklistInstance-content');
             return res.status(400).json({
                 susccess: false,
@@ -165,10 +168,17 @@ function checklistInstanceContent(id, res, imgName, contentName, indexFreeValue)
             });
         }
 
-        const content = checklist.content.find( content => content.name === contentName );
-        const freeValue = content.freeValues[indexFreeValue].images.unshift(imgName);
-
-        console.log(freeValue);
+        checklist.populate('content');
+        // console.log(checklist);
+        
+        const content = checklist.content.find( content => content.section === contentSection );
+        const checkpoint = content.checkpoints.find( check => check.name === checkpointName);
+        if( checkpoint.observations[indexObservation] === undefined) {
+            checkpoint.observations.push( { text: '', images: []})
+        }
+        const observation = checkpoint.observations[indexObservation].images.unshift(imgName);
+        console.log('checkpoint: ' + checkpoint);
+        console.log('Observation: ' + observation);
 
 
         checklist.save((err, chkSaved) => {
@@ -181,7 +191,7 @@ function checklistInstanceContent(id, res, imgName, contentName, indexFreeValue)
     });
 }
 
-function incident(id, res, imgName, contentIndex, indexFreeValue) {
+function incident(id, res, imgName) {
     Incident.findById(id, (err, incident) => {
         if(err) {
             deleteFile(imgName, 'incident');
@@ -200,9 +210,10 @@ function incident(id, res, imgName, contentIndex, indexFreeValue) {
         }
 
         //const content = checklist.content.find( content => content.name === content );
-        const freeValue = incident.content[contentIndex].freeValues[indexFreeValue].images.unshift(imgName);
+        //const freeValue = incident.content[contentIndex].freeValues[indexFreeValue].images.unshift(imgName);
+        const imgAdd = incident.images.unshift(imgName);
 
-        console.log(freeValue);
+        console.log(imgAdd);
 
 
         incident.save((err, incidentSaved) => {

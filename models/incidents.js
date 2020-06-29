@@ -13,13 +13,7 @@ const incidentSchema = new mongoose.Schema({
   insecureConditions: String,
   signingDate: Date,
   signingInfo: String,
-  content: [{
-    freeValues: [{
-      images: [String],
-      name: String,
-      description: String
-    }]
-  }]
+  images: [String]
 },{
     timestamps: true,
     toJSON: {virtuals: true}
