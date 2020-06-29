@@ -45,18 +45,8 @@ export const TA_TableRowDetails = ({row}) => {
   console.log('!Row: ', row);
   return (
     <Grid container spacing={3}>
-      {row.content !== undefined && row.content.map(checkpoint => {
-        switch(checkpoint.type){
-          case lineTypeEnum.FIXED_LINE:
-            return (
-              <Fixedlinexcontent checkpoint={checkpoint}/>
-              )
-          case lineTypeEnum.FREE_LINE:
-              return (
-              <FreelinesContent checkpoint={checkpoint}/>)
-          default: 
-            break;
-        }
+      {row.content !== undefined && row.content.map(section => {
+        return (<ChecklistSection checkpoints={section.checkpoints} sectionName={section.section} />)
       })}
       <Grid item xs={8}>
           <TextField
@@ -142,15 +132,15 @@ const FreelinesContent = ({checkpoint}) => {
           Puntuación: {checkpoint.score}
         </Typography>
         <div className={classes.root}>
-          {checkpoint.freeValues.map((freeValue) => {
+          {checkpoint.observations.map((observation) => {
                return (
                <Grid item xs={12}>
                 <GridList className={classes.gridList} >
-                 {freeValue.images.map((image) => (
+                 {observation.images.map((image) => (
                    <GridListTile key={image}>
                      <img src={image} alt="" onClick={() => handleOnClickImage(image)}/>
                      <GridListTileBar
-                       title={freeValue.text}
+                       title={observation.text}
                        classes={{
                          root: classes.titleBar,
                          title: classes.title,
@@ -170,15 +160,71 @@ const FreelinesContent = ({checkpoint}) => {
     </>
    )
 }
-const Fixedlinexcontent = ({checkpoint}) => {
+const ChecklistSection = ({sectionName, checkpoints}) => {
   return (
+    <>
+    <Typography variant="h5" align="left">
+      {sectionName}
+    </Typography>
+    {checkpoints.map(checkpoint => {
+      switch(checkpoint.type){
+        case lineTypeEnum.FIXED_LINE:
+          return (
+            <Fixedlinescontent checkpoint={checkpoint}/>
+            )
+        case lineTypeEnum.FREE_LINE:
+            return (
+            <FreelinesContent checkpoint={checkpoint}/>
+            )
+        default: 
+          return (undefined)
+      }
+    })}
+  </>)
+}
+const Fixedlinescontent = ({checkpoint}) => {
+  const classes = useStyles();
+  const [image, setImage] = useState('');
+  const [showImage, setShowImage] = useState(false);
+
+  const handleOnClickImage = (newImage) => {
+    setImage(newImage);
+    setShowImage(newImage !== '' ? true : false );
+  }
+  return (
+    <>
       <Grid item xs={12}>
         <Paper variant='outlined'>
-          {checkpoint.name} {checkpoint.fixedValues[0]._value}
+          {checkpoint.name} {checkpoint.checked ? 'Si' : 'No'}
         </Paper>
         <Typography variant="overline" display="block" align="right" gutterBottom >
           Puntuación: {checkpoint.score}
         </Typography>
+        <div className={classes.root}>
+          {checkpoint.observations.map((observation) => {
+               return (
+               <Grid item xs={12}>
+                <GridList className={classes.gridList} >
+                 {observation.images.map((image) => (
+                   <GridListTile key={image}>
+                     <img src={image} alt="" onClick={() => handleOnClickImage(image)}/>
+                     <GridListTileBar
+                       title={observation.text}
+                       classes={{
+                         root: classes.titleBar,
+                         title: classes.title,
+                       }}
+                     />
+                   </GridListTile>
+                 ))}
+                </GridList>
+             </Grid>)
+          })}
+        </div>
       </Grid>
+      <Dialog aria-labelledby="simple-dialog-title" open={showImage} onClose={() => handleOnClickImage('')}>
+      <img src={image} alt="" />
+      </Dialog>
+    </>
   )
 }

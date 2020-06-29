@@ -4,8 +4,11 @@ const { getChecklistInstances, addChecklistInstance, deleteChecklistInstance, up
 
 router
   .route('/')
-  .get(getChecklistInstances)
   .post(addChecklistInstance);
+  
+router
+  .route('/:page/:pageSize')
+  .get(getChecklistInstances);
 
 router
   .route('/:id')

@@ -30,19 +30,24 @@ const useStyles = makeStyles({
     maxHeight: 440,
   },
 });
+
 let opss = [];
 let checklists = [];
+const initialDefaultChecklists = 100;
+
 export const TA_Table = () => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(2);
   const [type, setType] = useState(typeEnumDefault);
   const { checklistInstances, getChecklistInstances } = useContext(GlobalContext);
   const [checklistsToShow, setChecklistsToShow] = useState([]);
   const columns = TA_Columns();
 
   const handleChangePage = (event, newPage) => {
+    
     setPage(newPage);
+    //getChecklistInstances(newPage, rowsPerPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -65,7 +70,7 @@ export const TA_Table = () => {
   };
   
   useEffect( ()=> {
-     getChecklistInstances();
+     getChecklistInstances(page, initialDefaultChecklists);
   },[]);
   
   useMemo(() => {
@@ -119,7 +124,7 @@ export const TA_Table = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[2, 4, 100]}//10,25,100
         component="div"
         count={checklistsToShow.length}
         rowsPerPage={rowsPerPage}

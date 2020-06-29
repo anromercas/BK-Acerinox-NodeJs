@@ -20,27 +20,27 @@ export const TA_TableRow = ({ columns, row }) => {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
       </TableCell>
-    {columns.map((column) => {
-      let child = undefined;
-      switch (column.type){
-        case 'value':
-          const value = column.id.split('.').reduce((prev, current) => prev && prev[current], row);
-          child = (
-            <TA_TableCellValue column={column} value={value} />
-          );
-          break;
-        case 'action':
-          child = (
-            <TA_TableCellAction column={column} id={row._id} value={row.status} />
-          );
-          break;
-        default: 
-          break
-      }
-      return child;
-    })}
-  </TableRow>
-   <TableRow>
+      {columns.map((column) => {
+        let child = undefined;
+        switch (column.type){
+          case 'value':
+            const value = column.id.split('.').reduce((prev, current) => prev && prev[current], row);
+            child = (
+              <TA_TableCellValue column={column} value={value} />
+            );
+            break;
+          case 'action':
+            child = (
+              <TA_TableCellAction column={column} id={row._id} value={row.status} />
+            );
+            break;
+          default: 
+            break
+        }
+        return child;
+      })}
+    </TableRow>
+    <TableRow>
     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={columns.length}>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Box margin={1}>

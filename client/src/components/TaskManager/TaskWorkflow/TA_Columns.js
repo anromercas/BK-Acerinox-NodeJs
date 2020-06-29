@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { GlobalContext } from '../../../context/GlobalState';
 
 export const TA_Columns = () => {
-  const { updateChecklistInstanceStatus, error } = useContext(GlobalContext);
+  //const { updateChecklistInstanceStatus, error } = useContext(GlobalContext);
   return [
     { 
       type: '',

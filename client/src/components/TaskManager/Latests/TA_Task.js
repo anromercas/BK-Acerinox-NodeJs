@@ -8,6 +8,7 @@ export const TA_Task = ({ task }) => {
   const deleteTask = () => {
     deleteChecklistInstance(task._id);
   };
+  console.log("task: ", JSON.stringify(task));
   const summup = () => {
     const dueDate = new Date(task.dueDate);
     const dueDateFormattedDate = dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString(); 

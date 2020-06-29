@@ -2,15 +2,21 @@ const { ChecklistInstance, validateStatus } = require('../models/ChecklistInstan
 const Checklist = require('../models/Checklist')
 const { subTypeEnum, statusEnum, lineTypeEnum } = require('../models/enums/checklistInstanceEnums')
 require ('../utils/typeExtension');
+
 // @desc    Get all checklist instances
 // @route   GET /api/v1/checklistInstances
 // @access  Public
 exports.getChecklistInstances = async (req, res, next) => {
   try {
-    const type = req.params.type;
+    const page = req.params.page && req.params.page > -1 ? Number(req.params.page) : 0;
+    const pageSize = req.params.pageSize && req.params.pageSize > 0 ? Number(req.params.pageSize) : 10 ;
+
     const checklistinstances = await ChecklistInstance
     .find()
-    .populate([{path: 'user_id', select: 'fullname -_id'}, {path: 'checklist_id', select: 'type name -_id department'}]);
+    .populate([{path: 'user_id', select: 'fullname -_id'}, {path: 'checklist_id', select: 'type name -_id department'}])
+    .skip(page * pageSize)
+    .limit(pageSize)
+
     return res.status(200).json({
       success: true,
       count: checklistinstances.length,

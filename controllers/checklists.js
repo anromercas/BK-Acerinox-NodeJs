@@ -25,9 +25,9 @@ exports.getChecklists = async (req, res, next) => {
 // @access  Public
 exports.addChecklist = async (req, res, next) => {
   try {
-    const { name, type, description, department, checkpoints } = req.body;
+    const { name, type, description, department, content } = req.body;
     const aNewChlst = {
-      name, type, description, department, checkpoints
+      name, type, description, department, content
     }
     const checklist = await Checklist.create(aNewChlst);
   

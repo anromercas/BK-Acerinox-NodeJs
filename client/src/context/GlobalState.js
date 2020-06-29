@@ -54,9 +54,9 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-  async function getChecklistInstances(type, user) {
+  async function getChecklistInstances(page, pageSize) {
     try {
-      const res = await axios.get('/api/v1/checklistInstances');
+      const res = await axios.get(`/api/v1/checklistInstances/${page}/${pageSize}`);
 
       dispatch({
         type: 'GET_CHECKLIST_INSTANCES',
