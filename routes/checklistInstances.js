@@ -30,8 +30,9 @@ router
   .route('/:newStatus/:extension')
   .put(updateChecklistInstanceStatus)
 
+  // TODO: si ponemos dos parámetros entra en el endpoint de /:page/:pageSize en vez de por aquí, hay que ver como haerlo.
 router
-  .route('/instance/byuser')
+  .route('/instance/byuser/go')
   .get(getChecklistInstancesByUser)
 
 module.exports = router;
