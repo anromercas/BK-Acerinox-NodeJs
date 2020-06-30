@@ -26,7 +26,7 @@ exports.loginMobile = async (req, res, next) => {
             error: 'User or (password) wrong'
         });
       }
-
+      user.password = undefined;
         let token = await jwt.sign({
           user: user
         }, process.env.SEED, { expiresIn: process.env.TOKEN_EXPIRES });

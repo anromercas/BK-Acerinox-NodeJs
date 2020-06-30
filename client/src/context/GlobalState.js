@@ -13,7 +13,8 @@ const initialState = {
   validationError: null,
   successMessage: null
 }
-
+//DELETE
+const _token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJBRE1JTklTVFJBVE9SIiwiYWN0aXZlIjp0cnVlLCJfaWQiOiI1ZWM1NmM5NDAwM2Y5MTNmYzQ0MDAzZmUiLCJlbWFpbCI6Im51cmlhQG1haWwuY29tIiwiZmlyc3RuYW1lIjoiTnVyaWEiLCJzZWNvbmRuYW1lIjoiUm9tZXJvIiwibGFzdG5hbWUiOiJDYXN0aWxsbyIsImRlcGFydG1lbnQiOiJBY2VyaWEiLCJhdmF0YXIiOiJhdi0zLnBuZyIsImNyZWF0ZWRBdCI6IjIwMjAtMDUtMjBUMTc6NDQ6NTIuMTMxWiIsInVwZGF0ZWRBdCI6IjIwMjAtMDYtMjlUMTA6MDQ6NDAuMjkzWiIsImZ1bGxuYW1lIjoiTnVyaWEgUm9tZXJvIENhc3RpbGxvIiwiX192IjowfSwiaWF0IjoxNTkzNTE3MTE2LCJleHAiOjE1OTM1NTMxMTZ9.z6h1hK2CumbVZGGyxOANSNERngCEz3F8b-238H44C2Y'
 // Create context
 export const GlobalContext = createContext(initialState);
 
@@ -23,8 +24,14 @@ export const GlobalProvider = ({ children }) => {
 
   // Actions
   async function getAuditors() {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'token': _token 
+      }
+    }
     try {
-      const res = await axios.get('/api/v1/queries/auditors');
+      const res = await axios.get('/api/v1/queries/auditors', config);
 
       dispatch({
         type: 'GET_AUDITORS',
@@ -39,8 +46,14 @@ export const GlobalProvider = ({ children }) => {
   }
 
   async function getChecklists() {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'token': _token 
+      }
+    }
     try {
-      const res = await axios.get('/api/v1/checklists');
+      const res = await axios.get('/api/v1/checklists', config);
 
       dispatch({
         type: 'GET_CHECKLISTS',
@@ -55,8 +68,14 @@ export const GlobalProvider = ({ children }) => {
   }
 
   async function getChecklistInstances(page, pageSize) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'token': _token 
+      }
+    }
     try {
-      const res = await axios.get(`/api/v1/checklistInstances/${page}/${pageSize}`);
+      const res = await axios.get(`/api/v1/checklistInstances/${page}/${pageSize}`, config);
 
       dispatch({
         type: 'GET_CHECKLIST_INSTANCES',
@@ -71,8 +90,14 @@ export const GlobalProvider = ({ children }) => {
   }
 
   async function getLatests(quantity) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'token': _token
+      }
+    }
     try {
-      const res = await axios.get(`/api/v1/queries/latests/${quantity}`);
+      const res = await axios.get(`/api/v1/queries/latests/${quantity}`, config);
 
       dispatch({
         type: 'GET_LATESTS',
@@ -106,7 +131,7 @@ export const GlobalProvider = ({ children }) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        'token': '' 
+        'token': _token
       }
     }
 
@@ -128,7 +153,8 @@ export const GlobalProvider = ({ children }) => {
   async function addChecklistInstance(checklistInstance) {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'token': _token 
       }
     }
 
@@ -150,7 +176,8 @@ export const GlobalProvider = ({ children }) => {
   async function updateChecklistInstanceStatus(checklistInstance, newStatus, extension) {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'token': _token 
       }
     }
 

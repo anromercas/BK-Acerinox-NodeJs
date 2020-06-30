@@ -195,7 +195,7 @@ const Fixedlinescontent = ({checkpoint}) => {
     <>
       <Grid item xs={12}>
         <Paper variant='outlined'>
-          {checkpoint.name} {checkpoint.checked ? 'Si' : 'No'}
+          {checkpoint.name} ⌇ {checkpoint.checked ? 'Si' : 'No'}
         </Paper>
         <Typography variant="overline" display="block" align="right" gutterBottom >
           Puntuación: {checkpoint.score}

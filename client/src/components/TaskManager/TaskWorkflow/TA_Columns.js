@@ -14,7 +14,7 @@ export const TA_Columns = () => {
     { 
       type: 'value',
       id: 'checklist_id.department', 
-      label: 'Department',
+      label: 'Sección',
       align: 'left' 
       //minWidth: 170
     },
