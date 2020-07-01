@@ -32,7 +32,7 @@ router
 
   // TODO: si ponemos dos parámetros entra en el endpoint de /:page/:pageSize en vez de por aquí, hay que ver como haerlo.
 router
-  .route('/instance/byuser/go')
+  .route('/instance/byuser')
   .get(getChecklistInstancesByUser)
 
 module.exports = router;
