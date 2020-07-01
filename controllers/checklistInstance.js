@@ -9,12 +9,23 @@ const { deleteFile } = require('./upload');
 // @access  Public
 exports.getChecklistInstances = async (req, res, next) => {
   try {
+    const type = req.params.type ? req.params.type : 'CHECKLIST';
     const page = req.params.page && req.params.page > -1 ? Number(req.params.page) : 0;
     const pageSize = req.params.pageSize && req.params.pageSize > 0 ? Number(req.params.pageSize) : 10 ;
+    
+    const checklist_ids = await Checklist
+    .find({})
+    .where('type')
+    .equals(type)
+    .select('_id');
+
+   //console.log("checklist_ids " + JSON.stringify(checklist_ids))
 
     const checklistinstances = await ChecklistInstance
-    .find()
+    .find({})
     .populate([{path: 'user_id', select: 'fullname -_id'}, {path: 'checklist_id', select: 'type name -_id department'}])
+    .where('checklist_id')
+    .in(checklist_ids.map(checklistId => checklistId._id))
     .skip(page * pageSize)
     .limit(pageSize)
 
@@ -26,7 +37,7 @@ exports.getChecklistInstances = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error. Couldn´t get the checklist instances'
+      error: 'Server Error. Couldn´t get the checklist instances: ' + err.message
     });
   }
 }
@@ -130,7 +141,7 @@ exports.addChecklistInstance = async (req, res, next) => {
         })
         const aNewChklInst = {...instanceValues, content};
         const newChecklistInstance = await ChecklistInstance.create(aNewChklInst);
-        const filledNewChkInstance = await ChecklistInstance.findById(newChecklistInstance._id).populate([{path: 'checklist_id', select: 'name department'}, {path: 'user_id', select: 'fullname'}]);
+        const filledNewChkInstance = await ChecklistInstance.findById(newChecklistInstance._id).populate([{path: 'checklist_id', select: 'name department type'}, {path: 'user_id', select: 'fullname'}]);
         console.log("** newChecklistInstance " + JSON.stringify(filledNewChkInstance));
        
         //console.log("filledNewChkInstance " + JSON.stringify(filledNewChkInstance));
@@ -213,9 +224,9 @@ exports.deleteChecklistInstance = async (req, res, next) => {
     if (checklistinstance) {
       // mando a borrar las imgs
       if(checklistinstance.content.length > 0) {
-        checklistinstance.content.forEach( content => {
-          content.freeValues.forEach( value => {
-                value.images.forEach( img => {
+        checklistinstance.content.forEach( section => {
+          section.checkpoints.forEach( value => {
+                value.observations.forEach( img => {
                   deleteFile(img, 'checklistInstance-content');
                 });
             });

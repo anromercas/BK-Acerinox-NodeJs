@@ -7,10 +7,16 @@ export default (state, action) => {
         checklists: action.payload
       }
     case 'GET_CHECKLIST_INSTANCES':
+      const updatedChecklistInstances = action.payload;
+      state.checklistInstances.forEach(checklistInstance => {
+        if (!updatedChecklistInstances.find(({_id}) => _id === checklistInstance._id)){
+          updatedChecklistInstances.push(checklistInstance)
+        }
+      });
       return {
         ...state,
         loading: false,
-        checklistInstances: action.payload
+        checklistInstances: updatedChecklistInstances
       }
     case 'GET_AUDITORS':
       return {

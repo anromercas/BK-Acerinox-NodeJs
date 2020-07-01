@@ -14,7 +14,7 @@ const initialState = {
   successMessage: null
 }
 //DELETE
-const _token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJBRE1JTklTVFJBVE9SIiwiYWN0aXZlIjp0cnVlLCJfaWQiOiI1ZWM1NmM5NDAwM2Y5MTNmYzQ0MDAzZmUiLCJlbWFpbCI6Im51cmlhQG1haWwuY29tIiwiZmlyc3RuYW1lIjoiTnVyaWEiLCJzZWNvbmRuYW1lIjoiUm9tZXJvIiwibGFzdG5hbWUiOiJDYXN0aWxsbyIsImRlcGFydG1lbnQiOiJBY2VyaWEiLCJhdmF0YXIiOiJhdi0zLnBuZyIsImNyZWF0ZWRBdCI6IjIwMjAtMDUtMjBUMTc6NDQ6NTIuMTMxWiIsInVwZGF0ZWRBdCI6IjIwMjAtMDYtMjlUMTA6MDQ6NDAuMjkzWiIsImZ1bGxuYW1lIjoiTnVyaWEgUm9tZXJvIENhc3RpbGxvIiwiX192IjowfSwiaWF0IjoxNTkzNTE3MTE2LCJleHAiOjE1OTM1NTMxMTZ9.z6h1hK2CumbVZGGyxOANSNERngCEz3F8b-238H44C2Y'
+const _token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJBRE1JTklTVFJBVE9SIiwiYWN0aXZlIjp0cnVlLCJfaWQiOiI1ZWM1NmM5NDAwM2Y5MTNmYzQ0MDAzZmUiLCJlbWFpbCI6Im51cmlhQG1haWwuY29tIiwiZmlyc3RuYW1lIjoiTnVyaWEiLCJzZWNvbmRuYW1lIjoiUm9tZXJvIiwibGFzdG5hbWUiOiJDYXN0aWxsbyIsImRlcGFydG1lbnQiOiJBY2VyaWEiLCJhdmF0YXIiOiJhdi0zLnBuZyIsImNyZWF0ZWRBdCI6IjIwMjAtMDUtMjBUMTc6NDQ6NTIuMTMxWiIsInVwZGF0ZWRBdCI6IjIwMjAtMDYtMjlUMTA6MDQ6NDAuMjkzWiIsImZ1bGxuYW1lIjoiTnVyaWEgUm9tZXJvIENhc3RpbGxvIiwiX192IjowfSwiaWF0IjoxNTkzNjA0NzI1LCJleHAiOjE1OTM2NDA3MjV9.f1SdbC4t4I8q8H6D3rCk-c490qD6FMf6VdOiUFPo5-Q'
 // Create context
 export const GlobalContext = createContext(initialState);
 
@@ -67,7 +67,7 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-  async function getChecklistInstances(page, pageSize) {
+  async function getChecklistInstances(type, page, pageSize) {
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export const GlobalProvider = ({ children }) => {
       }
     }
     try {
-      const res = await axios.get(`/api/v1/checklistInstances/${page}/${pageSize}`, config);
+      const res = await axios.get(`/api/v1/checklistInstances/${type}/${page}/${pageSize}`, config);
 
       dispatch({
         type: 'GET_CHECKLIST_INSTANCES',
@@ -112,8 +112,14 @@ export const GlobalProvider = ({ children }) => {
   }
 
   async function deleteChecklistInstance(id) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'token': _token 
+      }
+    }
     try {
-      await axios.delete(`/api/v1/checklistInstances/${id}`);
+      await axios.delete(`/api/v1/checklistInstances/${id}`, config);
 
       dispatch({
         type: 'DELETE_CHECKLIST_INSTANCE',

@@ -106,31 +106,59 @@ export default function ChecklistPDF({checklistInstance}){
           {shortDateFormat(checklistInstance.updatedAt)}
         </Text>
         <View>
-          {checklistInstance.content !== undefined && checklistInstance.content.map(checkpoint => {
-          switch(checkpoint.type){
-            case lineTypeEnum.FIXED_LINE:
-              return (
-                <Fixedlinexcontent checkpoint={checkpoint}/>
-                )
-            case lineTypeEnum.FREE_LINE:
-                return (
-                <FreelinesContent checkpoint={checkpoint}/>)
-            default: 
-              break;
-          }
+          {checklistInstance.content !== undefined && checklistInstance.content.map(section => {
+            return (<Section section={section} />)
           })}
         </View>
-       
-          <Text style={styles.subtitle} break>
-            Comentarios
-          </Text>
-          <Text style={styles.comments}>
-            {checklistInstance.comments.reduce((prev, current) => prev.concat(current + '\n'), '')}
-          </Text>
+        <Text style={styles.subtitle} break>
+          Comentarios
+        </Text>
+        <Text style={styles.comments}>
+          {checklistInstance.comments.reduce((prev, current) => prev.concat(current + '\n'), '')}
+        </Text>
      
       </Page>
     </Document>
   )
+  const Section = ({section}) => {
+    return (
+      <View style={styles.freeLine}>
+        <Text style={styles.subtitle}>
+          {section.section}
+        </Text>
+        {section.checkpoints.map((checkpoint) => {
+              return (
+                <Checkpoint checkpoint={checkpoint}/>
+              )
+          })}
+      </View>
+    )
+  }
+  const Checkpoint = ({checkpoint}) => {
+    return (
+      <View style={styles.freeLine}>
+      <Text style={styles.subtitle}>
+        {checkpoint.name}
+      </Text>
+      <Text style={styles.score}>
+        Puntuación: {checkpoint.score}
+      </Text>
+      {checkpoint.observations.map((observation) => {
+            return (
+              <View style={styles.freeLine}>
+                <Text style={styles.text}>
+                  {observation.text}
+                </Text>
+                {observation.images.map((image) => (
+                  <Image source={'https://cors-anywhere.herokuapp.com/' + image} style={styles.image} wrap
+                  />
+                ))}
+              </View>
+            )
+        })}
+    </View>
+    )
+  }
   const Fixedlinexcontent = ({checkpoint}) => {
     return (
       <View style={styles.fixedLine}>

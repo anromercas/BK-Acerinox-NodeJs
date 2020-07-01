@@ -41,7 +41,7 @@ app.use('/api/v1/upload', upload);
 
 
 // VERIFY TOKEN
-app.use(verifyToken);
+//app.use(verifyToken);
 
 
 

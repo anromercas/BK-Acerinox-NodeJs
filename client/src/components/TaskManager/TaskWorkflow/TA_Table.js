@@ -20,7 +20,8 @@ import OPSIcon from '@material-ui/icons/WarningRounded';
 import ChecklistIcon from '@material-ui/icons/PlaylistAddCheckRounded';
 import { Typography } from '@material-ui/core';
 import { subTypeEnumDefault } from '../../../model/enums';
-const { typeEnum, typeEnumDefault } = require('../../../model/enums');
+import { get } from 'mongoose';
+const { typeEnum, typeEnumDefault, statusEnum } = require('../../../model/enums');
 
 const useStyles = makeStyles({
   root: {
@@ -31,33 +32,46 @@ const useStyles = makeStyles({
   },
 });
 
-let opss = [];
-let checklists = [];
+
 const initialDefaultChecklists = 100;
+
 
 export const TA_Table = () => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(2);
+  // const [pagesVisited, setPagesVisited] = useState({
+  //   'CHECKLIST': [0],
+  //   'OPS': [0]
+  // })
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [type, setType] = useState(typeEnumDefault);
   const { checklistInstances, getChecklistInstances } = useContext(GlobalContext);
   const [checklistsToShow, setChecklistsToShow] = useState([]);
+  const [checklists, setChecklists] = useState([]);
+  const [opss, setOpss] = useState([]);
   const columns = TA_Columns();
-
+  
   const handleChangePage = (event, newPage) => {
-    
+    // console.log('pagesVisited before: ', JSON.stringify(pagesVisited));
+    // if (!pagesVisited[type].includes(newPage)){
+    //   getChecklistInstances(type, newPage, rowsPerPage);
+    //   pagesVisited[type].push(newPage);
+    //   console.log('pagesVisited after: ', JSON.stringify(pagesVisited));
+    // }
     setPage(newPage);
-    //getChecklistInstances(newPage, rowsPerPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+    // opss = [];
+    // checklists = [];
+    // getChecklistInstances(typeEnum.CHECKLIST, 0, initialDefaultChecklists);
+    // getChecklistInstances(typeEnum.OPS, 0, initialDefaultChecklists);
   };
-
-  const handleTypeSelected = (event) => {
-    setType(event.target.value);
-    switch (event.target.value){
+  const changeType = (type) => {
+    setType(type);
+    switch (type){
       case typeEnum.CHECKLIST:
         setChecklistsToShow(checklists);
         break;
@@ -65,25 +79,47 @@ export const TA_Table = () => {
         setChecklistsToShow(opss);
         break;
       default: 
-      console.log("enters here in default"); break;
+        console.log("No checklist type matched!"); 
+        break;
     }
+  }
+  const handleTypeSelected = (event) => {
+    setType(event.target.value);
+    changeType(event.target.value);
   };
   
   useEffect( ()=> {
-     getChecklistInstances(page, initialDefaultChecklists);
+    getChecklistInstances(typeEnum.CHECKLIST, 0, initialDefaultChecklists);
+    getChecklistInstances(typeEnum.OPS, 0, initialDefaultChecklists);
   },[]);
-  
+
   useMemo(() => {
+    let _opss = []
+    let _checklists = [];
     checklistInstances.forEach(c => {
-      if (c.checklist_id.type === typeEnum.OPS)
-        opss.push(c);
-      else if (c.checklist_id.type === typeEnum.CHECKLIST)
-        checklists.push(c);
+      if (c.checklist_id.type === typeEnum.OPS) //&& !opss.find(({_id}) => _id === c._id))
+          _opss.push(c);
+      else if (c.checklist_id.type === typeEnum.CHECKLIST) //&& !checklists.find(({_id}) => _id === c._id))
+            _checklists.push(c);
     })
-    console.log("checklists: " + JSON.stringify(checklists));
-    console.log("ops: " +JSON.stringify(opss));
-    setChecklistsToShow(checklists);
+   
+    const order = [statusEnum.A_REVISAR, statusEnum.NOK, statusEnum.ASIGNADA, statusEnum.OK]
+    let opssSorted = [];
+    let checklistsSorted = [];
+    order.forEach(o => {
+      opssSorted = opssSorted.concat(_opss.filter(ops => ops.status === o))
+      checklistsSorted = checklistsSorted.concat(_checklists.filter(checklist => checklist.status === o))
+    })
+    setOpss(opssSorted);
+    setChecklists(checklistsSorted);
+    console.log("checklistInstances: " + checklistInstances.length);
+    console.log("checklists.length: " + checklists.length);
+    console.log("ops.length: " + opss.length);
   }, [checklistInstances]);
+
+  useEffect(()=> {
+    changeType(type);
+  }, [opss, checklists])
 
   return (
     <>
@@ -124,7 +160,7 @@ export const TA_Table = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[2, 4, 100]}//10,25,100
+        rowsPerPageOptions={[5, 10, 100]}//10,25,100
         component="div"
         count={checklistsToShow.length}
         rowsPerPage={rowsPerPage}

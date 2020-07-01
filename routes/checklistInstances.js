@@ -16,7 +16,7 @@ router
   .post(addChecklistInstance);
   
 router
-  .route('/:page/:pageSize')
+  .route('/:type/:page/:pageSize')
   .get(getChecklistInstances);
 
 router
